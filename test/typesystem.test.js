@@ -5,7 +5,7 @@
 
 var assert = require('extended-assert');
 var createTypeSystem = require('../lib/typesystem').createTypeSystem;
-var g = require('../lib/generator');
+var g = require('./generator');
 
 describe('.createTypeSystem()', function () {
     it('returns a type system', function () {

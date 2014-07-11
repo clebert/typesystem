@@ -4,7 +4,7 @@
 'use strict';
 
 var assert = require('extended-assert');
-var generator = require('../lib/generator');
+var generator = require('./generator');
 
 function serialize(objects) {
     return objects.map(function (object) {
