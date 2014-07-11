@@ -30,7 +30,7 @@ var ts = createTypeSystem();
 
 #### Built-in Types
 
-| Type              | Accepted value           |
+| Type              | Accepted Value           |
 | :---------------- | :----------------------- |
 | object            | any object               |
 | object:arguments  | an arguments object      |
