@@ -1,0 +1,58 @@
+{
+    "name": "typesystem",
+    "version": "0.0.0",
+    "description": "Sophisticated Type Checking for JavaScript.",
+    "keywords": [
+        "type",
+        "checking",
+        "system",
+        "typeof"
+    ],
+    "author": {
+        "name": "Clemens Akens",
+        "email": "clebert@me.com",
+        "url": "http://clebert.com/"
+    },
+    "bugs": {
+        "url": "https://github.com/clebert/typesystem/issues"
+    },
+    "engines": {
+        "node": ">= 0.10.0"
+    },
+    "inceptionYear": 2014,
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://raw.githubusercontent.com/clebert/typesystem/master/LICENSE"
+        }
+    ],
+    "main": "lib/typesystem.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/clebert/typesystem.git"
+    },
+    "config": {
+        "blanket": {
+            "data-cover-only": "lib/",
+            "data-cover-never": "node_modules/"
+        },
+        "mocha-cov-reporter": {
+            "threshold": 100,
+            "useColors": true
+        }
+    },
+    "scripts": {
+        "test": "node_modules/.bin/grunt"
+    },
+    "devDependencies": {
+        "extended-assert": "~1.2.0",
+        "grunt": "~0.4.4",
+        "grunt-bumpup": "~0.5.2",
+        "grunt-cli": "~0.1.13",
+        "grunt-contrib-jshint": "~0.10.0",
+        "grunt-mocha-cov": "~0.2.1",
+        "grunt-module": "~0.1.2",
+        "mocha": "~1.20.1",
+        "mocha-cov-reporter": "~0.2.3"
+    }
+}
