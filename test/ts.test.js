@@ -4,7 +4,7 @@
 'use strict';
 
 var assert = require('extended-assert');
-var createTypeSystem = require('../lib/typesystem').createTypeSystem;
+var createTypeSystem = require('../lib/ts').createTypeSystem;
 var g = require('./generator');
 
 describe('.createTypeSystem()', function () {

@@ -10,7 +10,7 @@ var path = require('path');
 
 describe('package.json', function () {
     it('defines an existing primary entry point', function () {
-        assert.strictEqual(pkg.main, 'lib/typesystem.js');
+        assert.strictEqual(pkg.main, 'lib/ts.js');
         assert.ok(fs.existsSync(path.join(__dirname, '..', pkg.main)));
     });
 });
