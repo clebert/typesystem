@@ -11,6 +11,7 @@ describe('.createTypeSystem()', function () {
         var ts = createTypeSystem();
 
         assert.strictEqual(Object.prototype.toString.call(ts), '[object Object]');
+        assert.strictEqual(typeof ts.checkBounds, 'function');
         assert.strictEqual(typeof ts.checkType, 'function');
         assert.strictEqual(typeof ts.defineFiniteNumberType, 'function');
         assert.strictEqual(typeof ts.defineIntegerNumberType, 'function');
@@ -27,6 +28,7 @@ describe('.createTypeSystem()', function () {
 
 describe('TypeSystem', function () {
     var ts;
+    var checkBounds;
     var checkType;
     var defineFiniteNumberType;
     var defineIntegerNumberType;
@@ -37,6 +39,7 @@ describe('TypeSystem', function () {
 
     beforeEach(function () {
         ts = createTypeSystem();
+        checkBounds = ts.checkBounds;
         checkType = ts.checkType;
         defineFiniteNumberType = ts.defineFiniteNumberType;
         defineIntegerNumberType = ts.defineIntegerNumberType;
@@ -44,6 +47,51 @@ describe('TypeSystem', function () {
         hasType = ts.hasType;
         testType = ts.testType;
         types = ts.types;
+    });
+
+    describe('.checkBounds()', function () {
+        it('throws an error if the arguments are out of bounds', function () {
+            assert.throwsError(function () {
+                checkBounds([1], 0);
+            }, 'Error', 'Expected exactly 0 arguments, but got 1 arguments.');
+
+            assert.throwsError(function () {
+                checkBounds([1], 0, 0);
+            }, 'Error', 'Expected exactly 0 arguments, but got 1 arguments.');
+
+            assert.throwsError(function () {
+                checkBounds([], 1);
+            }, 'Error', 'Expected exactly 1 arguments, but got 0 arguments.');
+
+            assert.throwsError(function () {
+                checkBounds([], 1, 1);
+            }, 'Error', 'Expected exactly 1 arguments, but got 0 arguments.');
+
+            assert.throwsError(function () {
+                checkBounds([1, 2], 1);
+            }, 'Error', 'Expected exactly 1 arguments, but got 2 arguments.');
+
+            assert.throwsError(function () {
+                checkBounds([1, 2], 1, 1);
+            }, 'Error', 'Expected exactly 1 arguments, but got 2 arguments.');
+
+            assert.throwsError(function () {
+                checkBounds([], 1, 2);
+            }, 'Error', 'Expected at least 1 arguments, but got 0 arguments.');
+
+            assert.throwsError(function () {
+                checkBounds([1, 2, 3], 1, 2);
+            }, 'Error', 'Expected at most 2 arguments, but got 3 arguments.');
+        });
+
+        it('returns this type system if the arguments are in bounds', function () {
+            assert.strictEqual(checkBounds([], 0), ts);
+            assert.strictEqual(checkBounds([], 0, 0), ts);
+            assert.strictEqual(checkBounds([1], 1), ts);
+            assert.strictEqual(checkBounds([1], 1, 1), ts);
+            assert.strictEqual(checkBounds([1], 1, 2), ts);
+            assert.strictEqual(checkBounds([1, 2], 1, 2), ts);
+        });
     });
 
     describe('.checkType()', function () {

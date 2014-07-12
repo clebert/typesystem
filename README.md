@@ -52,6 +52,18 @@ var ts = createTypeSystem();
 | primitive:string  | a string primitive       |
 | primitive:void    | null or undefined        |
 
+### ts.checkBounds(args, min, [max])
+
+Throws an error if the arguments are out of bounds, and returns this type system otherwise.
+
+```javascript
+function stat(path, callback) {
+    ts.checkBounds(arguments, 2);
+
+    // ...
+}
+```
+
 ### ts.checkType(value, name, type)
 
 Throws an error if the value is not of the specified type, and returns it otherwise.
@@ -125,6 +137,8 @@ Example implementation of [fs.readFile(filename, [options], callback)](http://no
 
 ```javascript
 function readFile(filename, options, callback) {
+    ts.checkBounds(arguments, 2, 3);
+
     ts.checkType(filename, 'filename', 'primitive:string');
 
     if (arguments.length === 2) {
