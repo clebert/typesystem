@@ -1,4 +1,3 @@
-/* jshint maxlen: 160 */
 /* global describe, it */
 
 'use strict';

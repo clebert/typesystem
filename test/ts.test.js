@@ -1,4 +1,3 @@
-/* jshint maxlen: 160 */
 /* global beforeEach, describe, it */
 
 'use strict';
