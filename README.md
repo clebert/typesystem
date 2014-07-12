@@ -6,15 +6,15 @@
 
 > Sophisticated Type Checking for JavaScript.
 
-## Installation
+## Getting Started
+
+### Installation
 
 ```sh
 npm install typesystem --save
 ```
 
-## Usage
-
-### Node.js
+### Integration
 
 ```javascript
 var createTypeSystem = require('typesystem').createTypeSystem;
@@ -50,7 +50,7 @@ var ts = createTypeSystem();
 | primitive:boolean | a boolean primitive      |
 | primitive:number  | a number primitive       |
 | primitive:string  | a string primitive       |
-| primitive:void    | null and undefined       |
+| primitive:void    | null or undefined        |
 
 ### ts.checkType(value, name, type)
 
@@ -117,6 +117,29 @@ Returns an array of all existing types.
 
 ```javascript
 var types = ts.types();
+```
+
+## Example Usage
+
+Example implementation of [fs.readFile(filename, [options], callback)](http://nodejs.org/api/fs.html#fs_fs_readfile_filename_options_callback):
+
+```javascript
+function readFile(filename, options, callback) {
+    ts.checkType(filename, 'filename', 'primitive:string');
+
+    options = ts.testType(options, 'primitive:void') ?
+        {} : ts.checkType(options, '[options]', 'object:plain');
+
+    options.encoding = ts.testType(options.encoding, 'primitive:void') ?
+        null : ts.checkType(options.encoding, 'options.encoding', 'primitive:string');
+
+    options.flag = ts.testType(options.flag, 'primitive:void') ?
+        'r' : ts.checkType(options.flag, 'options.flag', 'primitive:string');
+
+    ts.checkType(callback, 'callback', 'object:function');
+
+    // ...
+}
 ```
 
 ## Running Tests
