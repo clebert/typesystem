@@ -76,7 +76,8 @@ function createPrimitivesMap() {
 
     primitivesMap['primitive:number'] = [
         0,
-        1
+        1,
+        Infinity
     ];
 
     primitivesMap['primitive:string'] = [

@@ -13,7 +13,8 @@ describe('.createTypeSystem()', function () {
 
         assert.strictEqual(Object.prototype.toString.call(ts), '[object Object]');
         assert.strictEqual(typeof ts.checkType, 'function');
-        assert.strictEqual(typeof ts.defineInt, 'function');
+        assert.strictEqual(typeof ts.defineFiniteNumberType, 'function');
+        assert.strictEqual(typeof ts.defineIntegerNumberType, 'function');
         assert.strictEqual(typeof ts.defineType, 'function');
         assert.strictEqual(typeof ts.hasType, 'function');
         assert.strictEqual(typeof ts.testType, 'function');
@@ -26,18 +27,20 @@ describe('.createTypeSystem()', function () {
 });
 
 describe('TypeSystem', function () {
+    var ts;
     var checkType;
-    var defineInt;
+    var defineFiniteNumberType;
+    var defineIntegerNumberType;
     var defineType;
     var hasType;
     var testType;
-    var ts;
     var types;
 
     beforeEach(function () {
         ts = createTypeSystem();
         checkType = ts.checkType;
-        defineInt = ts.defineInt;
+        defineFiniteNumberType = ts.defineFiniteNumberType;
+        defineIntegerNumberType = ts.defineIntegerNumberType;
         defineType = ts.defineType;
         hasType = ts.hasType;
         testType = ts.testType;
@@ -127,25 +130,25 @@ describe('TypeSystem', function () {
         });
     });
 
-    describe('.defineInt()', function () {
-        var newType = 'primitive:number:int';
+    describe('.defineFiniteNumberType()', function () {
+        var newType = 'primitive:number:finite';
 
         it('returns "' + newType + '"', function () {
-            assert.strictEqual(defineInt(), newType);
+            assert.strictEqual(defineFiniteNumberType(), newType);
         });
 
         it('throws an error if called twice on the same type system', function () {
-            defineInt();
+            defineFiniteNumberType();
 
             assert.throwsError(function () {
-                defineInt();
+                defineFiniteNumberType();
             }, 'Error', 'The new type already exist: "' + newType + '"');
         });
 
-        it('defines a new type which accepts only integer numbers', function () {
+        it('defines a new type which accepts only finite numbers', function () {
             assert.strictEqual(hasType(newType), false);
 
-            defineInt();
+            defineFiniteNumberType();
 
             assert.strictEqual(hasType(newType), true);
 
@@ -156,26 +159,65 @@ describe('TypeSystem', function () {
             });
 
             [
-                NaN,
-                -Infinity,
+                Infinity,
+                NaN
+            ].forEach(function (value) {
+                assert.strictEqual(testType(value, newType), false);
+            });
+
+            [
+                0,
+                1
+            ].forEach(function (value) {
+                assert.strictEqual(testType(value, newType), true);
+            });
+        });
+    });
+
+    describe('.defineIntegerNumberType()', function () {
+        var newType = 'primitive:number:integer';
+
+        it('returns "' + newType + '"', function () {
+            assert.strictEqual(defineIntegerNumberType(), newType);
+        });
+
+        it('throws an error if called twice on the same type system', function () {
+            defineIntegerNumberType();
+
+            assert.throwsError(function () {
+                defineIntegerNumberType();
+            }, 'Error', 'The new type already exist: "' + newType + '"');
+        });
+
+        it('defines a new type which accepts only integer numbers', function () {
+            assert.strictEqual(hasType(newType), false);
+
+            defineIntegerNumberType();
+
+            assert.strictEqual(hasType(newType), true);
+
+            g.typesExcept('primitive:number').forEach(function (type) {
+                g.valuesOfType(type).forEach(function (value) {
+                    assert.strictEqual(testType(value, newType), false);
+                });
+            });
+
+            [
                 -2147483649,
-                -1.1,
-                -0.1,
+                2147483648,
                 0.1,
                 1.1,
-                2147483648,
-                Infinity
+                Infinity,
+                NaN
             ].forEach(function (value) {
                 assert.strictEqual(testType(value, newType), false);
             });
 
             [
                 -2147483648,
-                -1,
-                -0,
+                2147483647,
                 0,
-                1,
-                2147483647
+                1
             ].forEach(function (value) {
                 assert.strictEqual(testType(value, newType), true);
             });

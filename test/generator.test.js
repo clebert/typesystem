@@ -109,6 +109,7 @@ describe('generator', function () {
                 true,
                 0,
                 1,
+                Infinity,
                 '',
                 'string',
                 null,

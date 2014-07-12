@@ -80,17 +80,25 @@ if (ts.testType(path, 'primitive:string')) {
 Defines a new custom type and returns it.
 
 ```javascript
-var newType = ts.defineType('int', 'primitive:number', function (number) {
+var newType = ts.defineType('integer', 'primitive:number', function (number) {
     return number === (number | 0);
 });
 ```
 
-### ts.defineInt()
+### ts.defineFiniteNumberType()
 
-Defines a new type "primitive:number:int", which accepts only integer numbers, and returns it.
+Defines a new type ```primitive:number:finite```, which accepts only finite numbers, and returns it.
 
 ```javascript
-var newType = ts.defineInt();
+var newType = ts.defineFiniteNumberType();
+```
+
+### ts.defineIntegerNumberType()
+
+Defines a new type ```primitive:number:integer```, which accepts only integer numbers, and returns it.
+
+```javascript
+var newType = ts.defineIntegerNumberType();
 ```
 
 ### ts.hasType(type)
@@ -98,7 +106,7 @@ var newType = ts.defineInt();
 Returns true if the type exists, and false otherwise.
 
 ```javascript
-if (ts.hasType('primitive:number:int')) {
+if (ts.hasType('primitive:number:integer')) {
     // ...
 }
 ```
