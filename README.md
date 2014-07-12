@@ -150,10 +150,10 @@ function readFile(filename, options, callback) {
         {} : ts.checkType(options, '[options]', 'object:plain');
 
     options.encoding = ts.testType(options.encoding, 'primitive:void') ?
-        null : ts.checkType(options.encoding, 'options.encoding', 'primitive:string');
+        null : ts.checkType(options.encoding, '[options.encoding]', 'primitive:string');
 
     options.flag = ts.testType(options.flag, 'primitive:void') ?
-        'r' : ts.checkType(options.flag, 'options.flag', 'primitive:string');
+        'r' : ts.checkType(options.flag, '[options.flag]', 'primitive:string');
 
     ts.checkType(callback, 'callback', 'object:function');
 
