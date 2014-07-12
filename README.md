@@ -127,6 +127,11 @@ Example implementation of [fs.readFile(filename, [options], callback)](http://no
 function readFile(filename, options, callback) {
     ts.checkType(filename, 'filename', 'primitive:string');
 
+    if (arguments.length === 2) {
+        callback = options;
+        options = null;
+    }
+
     options = ts.testType(options, 'primitive:void') ?
         {} : ts.checkType(options, '[options]', 'object:plain');
 
