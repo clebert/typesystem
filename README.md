@@ -30,6 +30,8 @@ var createTypeSystem = require('typesystem').createTypeSystem;
 
 ### createTypeSystem()
 
+Creates a new type system and returns it.
+
 ```javascript
 var ts = createTypeSystem();
 ```
@@ -144,7 +146,6 @@ Example implementation of [fs.readFile(filename, [options], callback)](http://no
 ```javascript
 function readFile(filename, options, callback) {
     ts.checkBounds(arguments, 2, 3);
-
     ts.checkType(filename, 'filename', 'primitive:string');
 
     if (arguments.length === 2) {
