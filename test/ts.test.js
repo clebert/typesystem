@@ -285,11 +285,17 @@ describe('TypeSystem', function () {
             assert.strictEqual(type, 'primitive:number:foo:bar');
         });
 
+        it('throws an error if not called with 3 arguments', function () {
+            assert.throwsError(function () {
+                defineType();
+            }, 'Error', 'Expected exactly 3 arguments, but got 0 arguments.');
+        });
+
         it('throws an error if the <name> is not of type "primitive:string"', function () {
             g.typesExcept('primitive:string').forEach(function (type) {
                 g.valuesOfType(type).forEach(function (name) {
                     assert.throwsError(function () {
-                        defineType(name);
+                        defineType(name, 'primitive:number', function () {});
                     }, 'TypeError', 'The <name> must be of type: "primitive:string"');
                 });
             });
@@ -299,7 +305,7 @@ describe('TypeSystem', function () {
             g.typesExcept('primitive:string').forEach(function (type) {
                 g.valuesOfType(type).forEach(function (supertype) {
                     assert.throwsError(function () {
-                        defineType('foo', supertype);
+                        defineType('foo', supertype, function () {});
                     }, 'TypeError', 'The <supertype> must be of type: "primitive:string"');
                 });
             });
