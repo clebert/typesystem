@@ -107,7 +107,7 @@ var newType = ts.defineType('integer', 'primitive:number', function (number) {
 
 ### ts.defineFiniteNumberType()
 
-Defines a new type ```primitive:number:finite```, which accepts only finite numbers, and returns it.
+Defines a new type `primitive:number:finite`, which accepts only finite numbers, and returns it.
 
 ```javascript
 var newType = ts.defineFiniteNumberType();
@@ -115,7 +115,7 @@ var newType = ts.defineFiniteNumberType();
 
 ### ts.defineIntegerNumberType()
 
-Defines a new type ```primitive:number:integer```, which accepts only integer numbers, and returns it.
+Defines a new type `primitive:number:integer`, which accepts only integer numbers, and returns it.
 
 ```javascript
 var newType = ts.defineIntegerNumberType();
