@@ -133,7 +133,7 @@ if (ts.hasType('primitive:number:integer')) {
 
 ### ts.types()
 
-Returns an array of all existing types.
+Returns a sorted array of all existing types.
 
 ```javascript
 var types = ts.types();
