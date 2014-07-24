@@ -1,27 +1,24 @@
+/* eslint no-new-wrappers: 0 */
+
 'use strict';
 
-function createObjectsMap() {
-    /* jshint -W053 */
-
-    var objectsMap = Object.create(null);
-
-    objectsMap['object:arguments'] = [
-        arguments
-    ];
-
-    objectsMap['object:array'] = [
+var valuesMap = {
+    Arguments: [
+        (function () {
+            return arguments;
+        }())
+    ],
+    Array: [
         []
-    ];
-
-    objectsMap['object:boolean'] = [
-        new Boolean()
-    ];
-
-    objectsMap['object:date'] = [
+    ],
+    Boolean: [
+        false,
+        true
+    ],
+    Date: [
         new Date()
-    ];
-
-    objectsMap['object:error'] = [
+    ],
+    Error: [
         new Error(),
         new EvalError(),
         new RangeError(),
@@ -29,106 +26,54 @@ function createObjectsMap() {
         new SyntaxError(),
         new TypeError(),
         new URIError()
-    ];
-
-    objectsMap['object:function'] = [
+    ],
+    Function: [
         function () {}
-    ];
-
-    objectsMap['object:global'] = [
-        global
-    ];
-
-    objectsMap['object:json'] = [
-        JSON
-    ];
-
-    objectsMap['object:math'] = [
-        Math
-    ];
-
-    objectsMap['object:number'] = [
-        new Number()
-    ];
-
-    objectsMap['object:plain'] = [
-        {}
-    ];
-
-    objectsMap['object:regex'] = [
-        new RegExp()
-    ];
-
-    objectsMap['object:string'] = [
-        new String()
-    ];
-
-    return objectsMap;
-}
-
-function createPrimitivesMap() {
-    var primitivesMap = Object.create(null);
-
-    primitivesMap['primitive:boolean'] = [
-        false,
-        true
-    ];
-
-    primitivesMap['primitive:number'] = [
+    ],
+    Null: [
+        null
+    ],
+    Number: [
         0,
         1,
-        Infinity
-    ];
-
-    primitivesMap['primitive:string'] = [
+        Infinity,
+        NaN
+    ],
+    Object: [
+        {}
+    ],
+    RegExp: [
+        new RegExp()
+    ],
+    String: [
         '',
-        'string'
-    ];
-
-    primitivesMap['primitive:void'] = [
-        null,
-        undefined
-    ];
-
-    return primitivesMap;
-}
-
-exports.types = function () {
-    var objectTypes = Object.keys(createObjectsMap());
-    var primitiveTypes = Object.keys(createPrimitivesMap());
-
-    return objectTypes.concat(primitiveTypes).sort();
+        'dummy'
+    ],
+    Undefined: [
+        void 0
+    ],
+    Misc: [
+        global,
+        JSON,
+        Math,
+        new Boolean(),
+        new Number(),
+        new String()
+    ]
 };
 
-exports.typesExcept = function (typeToExclude) {
-    var objectTypes = Object.keys(createObjectsMap());
-    var primitiveTypes = Object.keys(createPrimitivesMap());
-
-    return objectTypes.concat(primitiveTypes).filter(function (type) {
-        return type !== typeToExclude;
-    }).sort();
+exports.getValues = function (types) {
+    return types.reduce(function (values, type) {
+        return values.concat(valuesMap[type]);
+    }, []);
 };
 
-exports.valuesOfType = function (type) {
-    var objectsMap = createObjectsMap();
-
-    if (type === 'object') {
-        var objectTypes = Object.keys(createObjectsMap()).sort();
-
-        return objectTypes.reduce(function (objects, type) {
-            return objects.concat(objectsMap[type]);
-        }, []);
-    }
-
-    var primitivesMap = createPrimitivesMap();
-
-    if (type === 'primitive') {
-        var primitiveTypes = Object.keys(createPrimitivesMap()).sort();
-
-        return primitiveTypes.reduce(function (primitives, type) {
-            return primitives.concat(primitivesMap[type]);
-        }, []);
-    }
-
-    return objectsMap[type] || primitivesMap[type];
+exports.getValuesExcept = function (typesToExclude) {
+    return Object.keys(valuesMap).filter(function (type) {
+        return typesToExclude.every(function (typeToExclude) {
+            return type !== typeToExclude;
+        });
+    }).reduce(function (values, type) {
+        return values.concat(valuesMap[type]);
+    }, []);
 };

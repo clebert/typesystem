@@ -5,22 +5,11 @@ module.exports = function (grunt) {
         bumpup: {
             file: 'package.json'
         },
-        jshint: {
-            'lint-js': {
-                options: {
-                    jshintrc: '.jshintrc'
-                },
-                src: [
-                    '**/*.js',
-                    '!node_modules/**/*.js'
-                ]
-            },
-            'lint-json': {
-                src: [
-                    '**/*.json',
-                    '!node_modules/**/*.json'
-                ]
-            }
+        eslint: {
+            src: [
+                '**/*.js',
+                '!node_modules/**/*.js'
+            ]
         },
         mochacov: {
             options: {
@@ -77,7 +66,7 @@ module.exports = function (grunt) {
     });
 
     grunt.loadNpmTasks('grunt-bumpup');
-    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-eslint');
     grunt.loadNpmTasks('grunt-mocha-cov');
     grunt.loadNpmTasks('grunt-module');
 
@@ -86,10 +75,7 @@ module.exports = function (grunt) {
         'test'
     ]);
 
-    grunt.registerTask('lint', [
-        'jshint:lint-js',
-        'jshint:lint-json'
-    ]);
+    grunt.registerTask('lint', 'eslint');
 
     grunt.registerTask('test', [
         'mochacov:test-spec',
@@ -100,7 +86,7 @@ module.exports = function (grunt) {
     grunt.registerTask('publish', function (type) {
         grunt.task.run('default');
         grunt.task.run('module:check-repository');
-        grunt.task.run('bumpup:' + (type || 'patch'));
+        grunt.task.run('bumpup:' + type);
         grunt.task.run('module:license-copyright');
         grunt.task.run('module:release-publish');
     });

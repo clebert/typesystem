@@ -23,149 +23,151 @@ npm install typesystem --save
 ### Integration
 
 ```javascript
-var createTypeSystem = require('typesystem').createTypeSystem;
+var ts = require('typesystem');
 ```
 
-## API
-
-### createTypeSystem()
-
-Creates a new type system and returns it.
-
-```javascript
-var ts = createTypeSystem();
-```
-
-#### Built-in Types
-
-| Type              | Accepted Value           |
-| :---------------- | :----------------------- |
-| object            | any object               |
-| object:arguments  | an arguments object      |
-| object:array      | an array object          |
-| object:boolean    | a boolean object         |
-| object:date       | a date object            |
-| object:error      | an error object          |
-| object:function   | a function object        |
-| object:global     | the Global/Window object |
-| object:json       | the JSON object          |
-| object:math       | the Math object          |
-| object:number     | a number object          |
-| object:plain      | a plain object           |
-| object:regex      | a regex object           |
-| object:string     | a string object          |
-| primitive         | any primitive            |
-| primitive:boolean | a boolean primitive      |
-| primitive:number  | a number primitive       |
-| primitive:string  | a string primitive       |
-| primitive:void    | null or undefined        |
-
-### ts.checkBounds(args, min, [max])
-
-Throws an error if the arguments are out of bounds, and returns this type system otherwise.
-
-```javascript
-function stat(path, callback) {
-    ts.checkBounds(arguments, 2);
-
-    // ...
-}
-```
-
-### ts.checkType(value, name, type)
-
-Throws an error if the value is not of the specified type, and returns it otherwise.
-
-```javascript
-function stat(path, callback) {
-    ts.checkType(path, 'path', 'primitive:string');
-    ts.checkType(callback, 'callback', 'object:function');
-
-    // ...
-}
-```
-
-### ts.testType(value, type)
-
-Returns true if the value is of the specified type, and false otherwise.
-
-```javascript
-if (ts.testType(path, 'primitive:string')) {
-    // ...
-}
-```
-
-### ts.defineType(name, supertype, tester)
-
-Defines a new custom type and returns it.
-
-```javascript
-var newType = ts.defineType('integer', 'primitive:number', function (number) {
-    return number === (number | 0);
-});
-```
-
-### ts.defineFiniteNumberType()
-
-Defines a new type `primitive:number:finite`, which accepts only finite numbers, and returns it.
-
-```javascript
-var newType = ts.defineFiniteNumberType();
-```
-
-### ts.defineIntegerNumberType()
-
-Defines a new type `primitive:number:integer`, which accepts only integer numbers, and returns it.
-
-```javascript
-var newType = ts.defineIntegerNumberType();
-```
-
-### ts.hasType(type)
-
-Returns true if the type exists, and false otherwise.
-
-```javascript
-if (ts.hasType('primitive:number:integer')) {
-    // ...
-}
-```
-
-### ts.types()
-
-Returns a sorted array of all existing types.
-
-```javascript
-var types = ts.types();
-```
-
-## Example Usage
+## Usage
 
 Example implementation of [fs.readFile(filename, [options], callback)](http://nodejs.org/api/fs.html#fs_fs_readfile_filename_options_callback):
 
 ```javascript
 function readFile(filename, options, callback) {
-    ts.checkBounds(arguments, 2, 3);
-    ts.checkType(filename, 'filename', 'primitive:string');
+    ts.checkRequired(filename, 'filename', ts.isString);
 
     if (arguments.length === 2) {
         callback = options;
         options = null;
     }
 
-    options = ts.testType(options, 'primitive:void') ?
-        {} : ts.checkType(options, '[options]', 'object:plain');
+    options = ts.checkOptional(options, 'options', ts.isObject, {});
+    options.encoding = ts.checkOptional(options.encoding, 'options.encoding', ts.isString, null);
+    options.flag = ts.checkOptional(options.flag, 'options.flag', ts.isString, 'r');
 
-    options.encoding = ts.testType(options.encoding, 'primitive:void') ?
-        null : ts.checkType(options.encoding, '[options.encoding]', 'primitive:string');
-
-    options.flag = ts.testType(options.flag, 'primitive:void') ?
-        'r' : ts.checkType(options.flag, '[options.flag]', 'primitive:string');
-
-    ts.checkType(callback, 'callback', 'object:function');
+    ts.checkRequired(callback, 'callback', ts.isFunction);
 
     // ...
 }
+```
+
+## API
+
+### ts.checkOptional(argument, name, predicate, defaultValue)
+
+```javascript
+options = ts.checkOptional(options, 'options', ts.isObject, {});
+```
+
+### ts.checkRequired(argument, name, predicate)
+
+```javascript
+filename = ts.checkRequired(filename, 'filename', ts.isString);
+```
+
+### ts.isArguments(value)
+
+```javascript
+var bool = ts.isArguments(arguments);
+```
+
+### ts.isArray(value)
+
+```javascript
+var bool = ts.isArray([]);
+```
+
+### ts.isBoolean(value)
+
+```javascript
+var bool = ts.isBoolean(false);
+var bool = ts.isBoolean(true);
+```
+
+### ts.isDate(value)
+
+```javascript
+var bool = ts.isDate(new Date());
+```
+
+### ts.isError(value)
+
+```javascript
+var bool = ts.isError(new Error());
+var bool = ts.isError(new EvalError());
+var bool = ts.isError(new RangeError());
+var bool = ts.isError(new ReferenceError());
+var bool = ts.isError(new SyntaxError());
+var bool = ts.isError(new TypeError());
+var bool = ts.isError(new URIError());
+```
+
+### ts.isFunction(value)
+
+```javascript
+var bool = ts.isFunction(function () {});
+```
+
+### ts.isNull(value)
+
+```javascript
+var bool = ts.isNull(null);
+```
+
+### ts.isNumber(value)
+
+```javascript
+var bool = ts.isNumber(0);
+var bool = ts.isNumber(1);
+var bool = ts.isNumber(Infinity);
+var bool = ts.isNumber(NaN);
+```
+
+### ts.isObject(value)
+
+```javascript
+var bool = ts.isObject({});
+```
+
+### ts.isRegExp(value)
+
+```javascript
+var bool = ts.isRegExp(new RegExp());
+```
+
+### ts.isString(value)
+
+```javascript
+var bool = ts.isString('');
+var bool = ts.isString('dummy');
+```
+
+### ts.isUndefined(value)
+
+```javascript
+var bool = ts.isUndefined(undefined);
+```
+
+### ts.isDecimal(value)
+
+```javascript
+var bool = ts.isDecimal(0);
+var bool = ts.isDecimal(1);
+var bool = ts.isDecimal(1.1);
+```
+
+### ts.isInteger(value)
+
+```javascript
+var bool = ts.isInteger(-2147483648);
+var bool = ts.isInteger(2147483647);
+var bool = ts.isInteger(0);
+var bool = ts.isInteger(1);
+```
+
+### ts.isVoid(value)
+
+```javascript
+var bool = ts.isVoid(null);
+var bool = ts.isVoid(undefined);
 ```
 
 ## Running Tests
@@ -181,7 +183,3 @@ then run the tests:
 ```sh
 npm test
 ```
-
-## License
-
-Licensed under the MIT license.

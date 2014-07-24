@@ -5,126 +5,165 @@
 var assert = require('extended-assert');
 var generator = require('./generator');
 
-function serialize(objects) {
-    return objects.map(function (object) {
-        return Object.prototype.toString.call(object).toLowerCase();
+var serialize = function (values) {
+    return values.map(function (value) {
+        var type = typeof value;
+
+        switch (type) {
+            case 'boolean':
+            case 'number':
+            case 'string':
+                return type + ':' + value;
+            default:
+                return Object.prototype.toString.call(value);
+        }
     });
-}
+};
 
 describe('generator', function () {
-    describe('.types()', function () {
-        it('returns a sorted array of all types', function () {
-            assert.deepEqual(generator.types(), [
-                'object:arguments',
-                'object:array',
-                'object:boolean',
-                'object:date',
-                'object:error',
-                'object:function',
-                'object:global',
-                'object:json',
-                'object:math',
-                'object:number',
-                'object:plain',
-                'object:regex',
-                'object:string',
-                'primitive:boolean',
-                'primitive:number',
-                'primitive:string',
-                'primitive:void'
+    describe('.getValues()', function () {
+        it('returns an array of all values of the specified <types>', function () {
+            assert.deepEqual(serialize(generator.getValues([
+                'Arguments'
+            ])), [
+                '[object Arguments]'
             ]);
-        });
 
-        it('returns always a new array', function () {
-            assert.notStrictEqual(generator.types(), generator.types());
-        });
-    });
-
-    describe('.typesExcept()', function () {
-        it('returns a sorted array of all types except the specified <typeToExclude>', function () {
-            assert.deepEqual(generator.typesExcept('object:error'), [
-                'object:arguments',
-                'object:array',
-                'object:boolean',
-                'object:date',
-                'object:function',
-                'object:global',
-                'object:json',
-                'object:math',
-                'object:number',
-                'object:plain',
-                'object:regex',
-                'object:string',
-                'primitive:boolean',
-                'primitive:number',
-                'primitive:string',
-                'primitive:void'
+            assert.deepEqual(serialize(generator.getValues([
+                'Array'
+            ])), [
+                '[object Array]'
             ]);
-        });
 
-        it('returns always a new array', function () {
-            var typeToExclude = 'object:error';
+            assert.deepEqual(serialize(generator.getValues([
+                'Boolean'
+            ])), [
+                'boolean:false',
+                'boolean:true'
+            ]);
 
-            assert.notStrictEqual(generator.typesExcept(typeToExclude), generator.typesExcept(typeToExclude));
-        });
-    });
+            assert.deepEqual(serialize(generator.getValues([
+                'Date'
+            ])), [
+                '[object Date]'
+            ]);
 
-    describe('.valuesOfType()', function () {
-        it('returns a sorted array of all values for the specified <type>', function () {
-            assert.deepEqual(serialize(generator.valuesOfType('object')), [
-                '[object arguments]',
-                '[object array]',
-                '[object boolean]',
-                '[object date]',
-                '[object error]',
-                '[object error]',
-                '[object error]',
-                '[object error]',
-                '[object error]',
-                '[object error]',
-                '[object error]',
-                '[object function]',
+            assert.deepEqual(serialize(generator.getValues([
+                'Error'
+            ])), [
+                '[object Error]',
+                '[object Error]',
+                '[object Error]',
+                '[object Error]',
+                '[object Error]',
+                '[object Error]',
+                '[object Error]'
+            ]);
+
+            assert.deepEqual(serialize(generator.getValues([
+                'Function'
+            ])), [
+                '[object Function]'
+            ]);
+
+            assert.deepEqual(serialize(generator.getValues([
+                'Null'
+            ])), [
+                '[object Null]'
+            ]);
+
+            assert.deepEqual(serialize(generator.getValues([
+                'Number'
+            ])), [
+                'number:0',
+                'number:1',
+                'number:Infinity',
+                'number:NaN'
+            ]);
+
+            assert.deepEqual(serialize(generator.getValues([
+                'Object'
+            ])), [
+                '[object Object]'
+            ]);
+
+            assert.deepEqual(serialize(generator.getValues([
+                'RegExp'
+            ])), [
+                '[object RegExp]'
+            ]);
+
+            assert.deepEqual(serialize(generator.getValues([
+                'String'
+            ])), [
+                'string:',
+                'string:dummy'
+            ]);
+
+            assert.deepEqual(serialize(generator.getValues([
+                'Undefined'
+            ])), [
+                '[object Undefined]'
+            ]);
+
+            assert.deepEqual(serialize(generator.getValues([
+                'Misc'
+            ])), [
                 '[object global]',
-                '[object json]',
-                '[object math]',
-                '[object number]',
-                '[object object]',
-                '[object regexp]',
-                '[object string]'
+                '[object JSON]',
+                '[object Math]',
+                '[object Boolean]',
+                '[object Number]',
+                '[object String]'
             ]);
 
-            assert.deepEqual(serialize(generator.valuesOfType('object:error')), [
-                '[object error]',
-                '[object error]',
-                '[object error]',
-                '[object error]',
-                '[object error]',
-                '[object error]',
-                '[object error]'
-            ]);
-
-            assert.deepEqual(generator.valuesOfType('primitive'), [
-                false,
-                true,
-                0,
-                1,
-                Infinity,
-                '',
-                'string',
-                null,
-                undefined
-            ]);
-
-            assert.deepEqual(generator.valuesOfType('primitive:boolean'), [
-                false,
-                true
+            assert.deepEqual(serialize(generator.getValues([
+                'Null',
+                'Undefined',
+                'Error'
+            ])), [
+                '[object Null]',
+                '[object Undefined]',
+                '[object Error]',
+                '[object Error]',
+                '[object Error]',
+                '[object Error]',
+                '[object Error]',
+                '[object Error]',
+                '[object Error]'
             ]);
         });
+    });
 
-        it('returns always a new array', function () {
-            var type = 'object:error';
-
-            assert.notStrictEqual(generator.valuesOfType(type), generator.valuesOfType(type));
+    describe('.getValuesExcept()', function () {
+        it('returns an array of all values not of the specified <types>', function () {
+            assert.deepEqual(serialize(generator.getValuesExcept([
+                'Boolean',
+                'Number',
+                'String'
+            ])), [
+                '[object Arguments]',
+                '[object Array]',
+                '[object Date]',
+                '[object Error]',
+                '[object Error]',
+                '[object Error]',
+                '[object Error]',
+                '[object Error]',
+                '[object Error]',
+                '[object Error]',
+                '[object Function]',
+                '[object Null]',
+                '[object Object]',
+                '[object RegExp]',
+                '[object Undefined]',
+                '[object global]',
+                '[object JSON]',
+                '[object Math]',
+                '[object Boolean]',
+                '[object Number]',
+                '[object String]'
+            ]);
         });
     });
 });
