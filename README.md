@@ -117,6 +117,7 @@ var bool = ts.isNull(null);
 ```javascript
 var bool = ts.isNumber(0);
 var bool = ts.isNumber(1);
+var bool = ts.isNumber(1.1);
 var bool = ts.isNumber(Infinity);
 var bool = ts.isNumber(NaN);
 ```
