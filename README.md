@@ -53,7 +53,7 @@ function readFile(filename, options, callback) {
 
 ### ts.check(value, predicate, [defaultValue])
 
-Each of the following expressions resolve to `<value>`:
+Each of the following expressions resolve to the `<value>`:
 
 ```javascript
 ts.check('abc', ts.isString);
@@ -62,11 +62,11 @@ ts.check('abc', ts.isString, 'xyz');
 ts.check(0, ts.isInteger);
 ts.check(0, ts.isInteger, 123);
 
-ts.check(null, ts.isNull);
-ts.check(undefined, ts.isUndefined);
+ts.check(null, ts.isVoid);
+ts.check(undefined, ts.isVoid);
 ```
 
-Each of the following expressions resolve to `<defaultValue>`:
+Each of the following expressions resolve to the `<defaultValue>`:
 
 ```javascript
 ts.check(null, ts.isString, 'xyz');
@@ -82,8 +82,8 @@ ts.check(0, ts.isString, 'xyz');
 ts.check('abc', ts.isInteger);
 ts.check('abc', ts.isInteger, 123);
 
-ts.check(undefined, ts.isNull);
-ts.check(null, ts.isUndefined);
+ts.check(null, ts.isString);
+ts.check(undefined, ts.isString);
 ```
 
 ### ts.isArguments(value)
