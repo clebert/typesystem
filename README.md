@@ -32,18 +32,18 @@ Example implementation of [fs.readFile(filename, [options], callback)](http://no
 
 ```javascript
 function readFile(filename, options, callback) {
-    ts.checkRequired(filename, 'filename', ts.isString);
+    ts.check(filename, ts.isString);
 
     if (arguments.length === 2) {
         callback = options;
-        options = null;
+        options  = null;
     }
 
-    options = ts.checkOptional(options, 'options', ts.isObject, {});
-    options.encoding = ts.checkOptional(options.encoding, 'options.encoding', ts.isString, null);
-    options.flag = ts.checkOptional(options.flag, 'options.flag', ts.isString, 'r');
+    options          = ts.check(options, ts.isObject, {});
+    options.encoding = ts.check(options.encoding, ts.isString, null);
+    options.flag     = ts.check(options.flag, ts.isString, 'r');
 
-    ts.checkRequired(callback, 'callback', ts.isFunction);
+    ts.check(callback, ts.isFunction);
 
     // ...
 }
@@ -51,124 +51,177 @@ function readFile(filename, options, callback) {
 
 ## API
 
-### ts.checkOptional(argument, name, predicate, defaultValue)
+### ts.check(value, predicate, [defaultValue])
+
+Each of the following expressions resolve to `<value>`:
 
 ```javascript
-options = ts.checkOptional(options, 'options', ts.isObject, {});
+ts.check('abc', ts.isString);
+ts.check('abc', ts.isString, 'xyz');
+
+ts.check(0, ts.isInteger);
+ts.check(0, ts.isInteger, 123);
+
+ts.check(null, ts.isNull);
+ts.check(undefined, ts.isUndefined);
 ```
 
-### ts.checkRequired(argument, name, predicate)
+Each of the following expressions resolve to `<defaultValue>`:
 
 ```javascript
-filename = ts.checkRequired(filename, 'filename', ts.isString);
+ts.check(null, ts.isString, 'xyz');
+ts.check(undefined, ts.isString, 'xyz');
+```
+
+Each of the following expressions throw a `TypeError`:
+
+```javascript
+ts.check(0, ts.isString);
+ts.check(0, ts.isString, 'xyz');
+
+ts.check('abc', ts.isInteger);
+ts.check('abc', ts.isInteger, 123);
+
+ts.check(undefined, ts.isNull);
+ts.check(null, ts.isUndefined);
 ```
 
 ### ts.isArguments(value)
 
+The following expression resolves to `true`:
+
 ```javascript
-var bool = ts.isArguments(arguments);
+ts.isArguments(arguments);
 ```
 
 ### ts.isArray(value)
 
+The following expression resolves to `true`:
+
 ```javascript
-var bool = ts.isArray([]);
+ts.isArray([]);
 ```
 
 ### ts.isBoolean(value)
 
+Each of the following expressions resolve to `true`:
+
 ```javascript
-var bool = ts.isBoolean(false);
-var bool = ts.isBoolean(true);
+ts.isBoolean(false);
+ts.isBoolean(true);
 ```
 
 ### ts.isDate(value)
 
+The following expression resolves to `true`:
+
 ```javascript
-var bool = ts.isDate(new Date());
+ts.isDate(new Date());
 ```
 
 ### ts.isError(value)
 
+Each of the following expressions resolve to `true`:
+
 ```javascript
-var bool = ts.isError(new Error());
-var bool = ts.isError(new EvalError());
-var bool = ts.isError(new RangeError());
-var bool = ts.isError(new ReferenceError());
-var bool = ts.isError(new SyntaxError());
-var bool = ts.isError(new TypeError());
-var bool = ts.isError(new URIError());
+ts.isError(new Error());
+ts.isError(new EvalError());
+ts.isError(new RangeError());
+ts.isError(new ReferenceError());
+ts.isError(new SyntaxError());
+ts.isError(new TypeError());
+ts.isError(new URIError());
 ```
 
 ### ts.isFunction(value)
 
+The following expression resolves to `true`:
+
 ```javascript
-var bool = ts.isFunction(function () {});
+ts.isFunction(function () {});
 ```
 
 ### ts.isNull(value)
 
+The following expression resolves to `true`:
+
 ```javascript
-var bool = ts.isNull(null);
+ts.isNull(null);
 ```
 
 ### ts.isNumber(value)
 
+Each of the following expressions resolve to `true`:
+
 ```javascript
-var bool = ts.isNumber(0);
-var bool = ts.isNumber(1);
-var bool = ts.isNumber(1.1);
-var bool = ts.isNumber(Infinity);
-var bool = ts.isNumber(NaN);
+ts.isNumber(0);
+ts.isNumber(1);
+ts.isNumber(1.1);
+ts.isNumber(Infinity);
+ts.isNumber(NaN);
 ```
 
 ### ts.isObject(value)
 
+The following expression resolves to `true`:
+
 ```javascript
-var bool = ts.isObject({});
+ts.isObject({});
 ```
 
 ### ts.isRegExp(value)
 
+The following expression resolves to `true`:
+
 ```javascript
-var bool = ts.isRegExp(new RegExp());
+ts.isRegExp(new RegExp());
 ```
 
 ### ts.isString(value)
 
+Each of the following expressions resolve to `true`:
+
 ```javascript
-var bool = ts.isString('');
-var bool = ts.isString('dummy');
+ts.isString('');
+ts.isString('dummy');
 ```
 
 ### ts.isUndefined(value)
 
+The following expression resolves to `true`:
+
 ```javascript
-var bool = ts.isUndefined(undefined);
+ts.isUndefined(undefined);
 ```
 
-### ts.isDecimal(value)
+### ts.isFloat(value)
+
+Each of the following expressions resolve to `true`:
 
 ```javascript
-var bool = ts.isDecimal(0);
-var bool = ts.isDecimal(1);
-var bool = ts.isDecimal(1.1);
+ts.isFloat(0);
+ts.isFloat(1);
+ts.isFloat(1.1);
 ```
 
 ### ts.isInteger(value)
 
+Each of the following expressions resolve to `true`:
+
 ```javascript
-var bool = ts.isInteger(-2147483648);
-var bool = ts.isInteger(2147483647);
-var bool = ts.isInteger(0);
-var bool = ts.isInteger(1);
+ts.isInteger(-2147483648);
+ts.isInteger(2147483647);
+ts.isInteger(0);
+ts.isInteger(1);
 ```
 
 ### ts.isVoid(value)
 
+Each of the following expressions resolve to `true`:
+
 ```javascript
-var bool = ts.isVoid(null);
-var bool = ts.isVoid(undefined);
+ts.isVoid(null);
+ts.isVoid(undefined);
 ```
 
 ## Running Tests

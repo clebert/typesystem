@@ -3,8 +3,8 @@
 'use strict';
 
 var assert = require('extended-assert');
-var ts = require('../lib/ts');
-var g = require('./generator');
+var ts     = require('../lib/ts');
+var g      = require('./generator');
 
 var testPredicate = function (predicate, types) {
     it('returns false', function () {
@@ -20,67 +20,75 @@ var testPredicate = function (predicate, types) {
     });
 };
 
-var testCheck = function (check, createErrorMessage) {
-    it('throws an error containing the <name> if the <predicate> evaluates to a falsy value', function () {
-        var expected = 'name';
-
-        assert.throwsError(function () {
-            check('argument', expected, function () {
-                return 0;
-            });
-        }, 'Error', createErrorMessage(expected));
-    });
-
-    it('returns the <argument> if the <predicate> evaluates to a truthy value', function () {
-        var expected = 'argument';
-
-        assert.strictEqual(check(expected, 'name', function () {
-            return 1;
-        }), expected);
-    });
-
-    it('calls the <predicate> and passes the <argument> to it', function () {
-        var called = false;
-        var expected = 'argument';
-
-        check(expected, 'name', function (actual) {
-            called = true;
-
-            assert.strictEqual(actual, expected);
-
-            return true;
-        });
-
-        assert.strictEqual(called, true);
-    });
-};
-
 describe('ts', function () {
-    describe('.checkOptional()', function () {
-        it('returns the <defaultValue> and doesn\'t call the <predicate> if the <argument> is void', function () {
-            var called = false;
-            var expected = 'defaultValue';
+    describe('.check()', function () {
+        var truthy = function () {
+            return 1;
+        };
 
-            g.getValues([
-                'Null',
-                'Undefined'
-            ]).forEach(function (value) {
-                assert.strictEqual(ts.checkOptional(value, 'name', function () {
-                    called = true;
-                }, expected), expected);
-            });
+        var falsy = function () {
+            return 0;
+        };
 
-            assert.strictEqual(called, false);
+        it('returns the <value>', function () {
+            assert.strictEqual(ts.check('abc', truthy), 'abc');
+            assert.strictEqual(ts.check('abc', truthy, 'xyz'), 'abc');
+
+            assert.strictEqual(ts.check(0, truthy), 0);
+            assert.strictEqual(ts.check(0, truthy, 123), 0);
+
+            assert.strictEqual(ts.check(null, truthy), null);
+            assert.strictEqual(ts.check(void 0, truthy), void 0);
         });
 
-        testCheck(ts.checkOptional, function (name) {
-            return 'Illegal argument: [' + name + ']';
-        });
-    });
+        it('returns the <defaultValue>', function () {
+            assert.strictEqual(ts.check(null, truthy, 'xyz'), 'xyz');
+            assert.strictEqual(ts.check(null, falsy, 'xyz'), 'xyz');
 
-    describe('.checkRequired()', function () {
-        testCheck(ts.checkRequired, function (name) {
-            return 'Illegal argument: ' + name;
+            assert.strictEqual(ts.check(void 0, truthy, 'xyz'), 'xyz');
+            assert.strictEqual(ts.check(void 0, falsy, 'xyz'), 'xyz');
+        });
+
+        it('throws a type error', function () {
+            assert.throwsError(function () {
+                ts.check('abc', falsy);
+            }, 'TypeError', 'Illegal argument: "abc"');
+
+            assert.throwsError(function () {
+                ts.check('abc', falsy, 'xyz');
+            }, 'TypeError', 'Illegal argument: "abc"');
+
+            assert.throwsError(function () {
+                ts.check(0, falsy);
+            }, 'TypeError', 'Illegal argument: 0');
+
+            assert.throwsError(function () {
+                ts.check(0, falsy, 'xyz');
+            }, 'TypeError', 'Illegal argument: 0');
+
+            assert.throwsError(function () {
+                ts.check(null, falsy);
+            }, 'TypeError', 'Illegal argument: null');
+
+            assert.throwsError(function () {
+                ts.check(void 0, falsy);
+            }, 'TypeError', 'Illegal argument: undefined');
+        });
+
+        it('passes the <value> to the <predicate>', function () {
+            var called = 0;
+
+            var predicate = function (value) {
+                assert.strictEqual(value, 'abc');
+
+                called += 1;
+
+                return true;
+            };
+
+            ts.check('abc', predicate);
+
+            assert.strictEqual(called, 1);
         });
     });
 
@@ -105,8 +113,8 @@ describe('ts', function () {
         });
     });
 
-    describe('.isDecimal()', function () {
-        var predicate = ts.isDecimal;
+    describe('.isFloat()', function () {
+        var predicate = ts.isFloat;
 
         it('returns false', function () {
             g.getValuesExcept([

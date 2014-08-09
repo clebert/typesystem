@@ -51,7 +51,7 @@
         "grunt-bumpup": "~0.6.0",
         "grunt-cli": "~0.1.13",
         "grunt-eslint": "~0.6.0",
-        "grunt-mocha-cov": "~0.2.1",
+        "grunt-mocha-cov": "~0.3.0",
         "grunt-module": "~0.3.1",
         "mocha-cov-reporter": "~0.3.0"
     }
