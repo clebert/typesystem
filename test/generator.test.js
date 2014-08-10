@@ -2,7 +2,7 @@
 
 'use strict';
 
-var assert = require('extended-assert');
+var assert    = require('extended-assert');
 var generator = require('./generator');
 
 var serialize = function (values) {
