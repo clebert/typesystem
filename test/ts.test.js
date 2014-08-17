@@ -20,6 +20,37 @@ var testPredicate = function (predicate, types) {
     });
 };
 
+var MAX_SAFE_INTEGER = 9007199254740991;
+var MIN_SAFE_INTEGER = -9007199254740991;
+
+var testInt = function (predicate, max, min) {
+    it('returns false', function () {
+        g.getValuesExcept([
+            'Number'
+        ]).concat([
+            max === MAX_SAFE_INTEGER ? Infinity : max + 1,
+            min === MIN_SAFE_INTEGER ? -Infinity : min - 1,
+            0.1,
+            1.1,
+            Infinity,
+            NaN
+        ]).forEach(function (value) {
+            assert.strictEqual(predicate(value), false);
+        });
+    });
+
+    it('returns true', function () {
+        [
+            max,
+            min,
+            0,
+            1
+        ].forEach(function (value) {
+            assert.strictEqual(predicate(value), true);
+        });
+    });
+};
+
 describe('ts', function () {
     describe('.check()', function () {
         var truthy = function () {
@@ -113,6 +144,13 @@ describe('ts', function () {
         });
     });
 
+    describe('.isVoid()', function () {
+        testPredicate(ts.isVoid, [
+            'Null',
+            'Undefined'
+        ]);
+    });
+
     describe('.isFloat()', function () {
         var predicate = ts.isFloat;
 
@@ -129,8 +167,8 @@ describe('ts', function () {
 
         it('returns true', function () {
             [
-                -2147483649,
-                2147483648,
+                Number.MAX_VALUE,
+                Number.MIN_VALUE,
                 0.1,
                 1.1,
                 0,
@@ -141,40 +179,31 @@ describe('ts', function () {
         });
     });
 
-    describe('.isInteger()', function () {
-        var predicate = ts.isInteger;
-
-        it('returns false', function () {
-            g.getValuesExcept([
-                'Number'
-            ]).concat([
-                -2147483649,
-                2147483648,
-                0.1,
-                1.1,
-                Infinity,
-                NaN
-            ]).forEach(function (value) {
-                assert.strictEqual(predicate(value), false);
-            });
-        });
-
-        it('returns true', function () {
-            [
-                -2147483648,
-                2147483647,
-                0,
-                1
-            ].forEach(function (value) {
-                assert.strictEqual(predicate(value), true);
-            });
-        });
+    describe('.isInt()', function () {
+        testInt(ts.isInt, MAX_SAFE_INTEGER, MIN_SAFE_INTEGER);
     });
 
-    describe('.isVoid()', function () {
-        testPredicate(ts.isVoid, [
-            'Null',
-            'Undefined'
-        ]);
+    describe('.isInt8()', function () {
+        testInt(ts.isInt8, 127, -128);
+    });
+
+    describe('.isInt16()', function () {
+        testInt(ts.isInt16, 32767, -32768);
+    });
+
+    describe('.isInt32()', function () {
+        testInt(ts.isInt32, 2147483647, -2147483648);
+    });
+
+    describe('.isUInt8()', function () {
+        testInt(ts.isUInt8, 255, 0);
+    });
+
+    describe('.isUInt16()', function () {
+        testInt(ts.isUInt16, 65535, 0);
+    });
+
+    describe('.isUInt32()', function () {
+        testInt(ts.isUInt32, 4294967295, 0);
     });
 });

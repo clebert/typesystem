@@ -59,8 +59,8 @@ Each of the following expressions resolve to the `<value>`:
 ts.check('abc', ts.isString);
 ts.check('abc', ts.isString, 'xyz');
 
-ts.check(0, ts.isInteger);
-ts.check(0, ts.isInteger, 123);
+ts.check(0, ts.isInt);
+ts.check(0, ts.isInt, 123);
 
 ts.check(null, ts.isVoid);
 ts.check(undefined, ts.isVoid);
@@ -79,8 +79,8 @@ Each of the following expressions throw a `TypeError`:
 ts.check(0, ts.isString);
 ts.check(0, ts.isString, 'xyz');
 
-ts.check('abc', ts.isInteger);
-ts.check('abc', ts.isInteger, 123);
+ts.check('abc', ts.isInt);
+ts.check('abc', ts.isInt, 123);
 
 ts.check(null, ts.isString);
 ts.check(undefined, ts.isString);
@@ -194,27 +194,6 @@ The following expression resolves to `true`:
 ts.isUndefined(undefined);
 ```
 
-### ts.isFloat(value)
-
-Each of the following expressions resolve to `true`:
-
-```javascript
-ts.isFloat(0);
-ts.isFloat(1);
-ts.isFloat(1.1);
-```
-
-### ts.isInteger(value)
-
-Each of the following expressions resolve to `true`:
-
-```javascript
-ts.isInteger(-2147483648);
-ts.isInteger(2147483647);
-ts.isInteger(0);
-ts.isInteger(1);
-```
-
 ### ts.isVoid(value)
 
 Each of the following expressions resolve to `true`:
@@ -222,6 +201,77 @@ Each of the following expressions resolve to `true`:
 ```javascript
 ts.isVoid(null);
 ts.isVoid(undefined);
+```
+
+### ts.isFloat(value)
+
+The following expression resolves to `true`:
+
+```javascript
+ts.isFloat(3.141592653589793);
+```
+
+### ts.isInt(value)
+
+Each of the following expressions resolve to `true`:
+
+```javascript
+ts.isInt(-9007199254740991);
+ts.isInt(9007199254740991);
+```
+
+### ts.isInt8(value)
+
+Each of the following expressions resolve to `true`:
+
+```javascript
+ts.isInt8(-128);
+ts.isInt8(127);
+```
+
+### ts.isInt16(value)
+
+Each of the following expressions resolve to `true`:
+
+```javascript
+ts.isInt16(-32768);
+ts.isInt16(32767);
+```
+
+### ts.isInt32(value)
+
+Each of the following expressions resolve to `true`:
+
+```javascript
+ts.isInt32(-2147483648);
+ts.isInt32(2147483647);
+```
+
+### ts.isUInt8(value)
+
+Each of the following expressions resolve to `true`:
+
+```javascript
+ts.isUInt8(0);
+ts.isUInt8(255);
+```
+
+### ts.isUInt16(value)
+
+Each of the following expressions resolve to `true`:
+
+```javascript
+ts.isUInt16(0);
+ts.isUInt16(65535);
+```
+
+### ts.isUInt32(value)
+
+Each of the following expressions resolve to `true`:
+
+```javascript
+ts.isUInt32(0);
+ts.isUInt32(4294967295);
 ```
 
 ## Running Tests
