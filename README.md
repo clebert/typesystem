@@ -51,6 +51,31 @@ function readFile(filename, options, callback) {
 
 ## API
 
+### Overview
+
+- [ts.check(value, predicate, [defaultValue])](#tscheckvalue-predicate-defaultvalue)
+- [ts.isArguments(value)](#tsisargumentsvalue)
+- [ts.isArray(value)](#tsisarrayvalue)
+- [ts.isBoolean(value)](#tsisbooleanvalue)
+- [ts.isDate(value)](#tsisdatevalue)
+- [ts.isError(value)](#tsiserrorvalue)
+- [ts.isFunction(value)](#tsisfunctionvalue)
+- [ts.isNull(value)](#tsisnullvalue)
+- [ts.isNumber(value)](#tsisnumbervalue)
+- [ts.isObject(value)](#tsisobjectvalue)
+- [ts.isRegExp(value)](#tsisregexpvalue)
+- [ts.isString(value)](#tsisstringvalue)
+- [ts.isUndefined(value)](#tsisundefinedvalue)
+- [ts.isVoid(value)](#tsisvoidvalue)
+- [ts.isFloat(value)](#tsisfloatvalue)
+- [ts.isInt(value)](#tsisintvalue)
+- [ts.isInt8(value)](#tsisint8value)
+- [ts.isInt16(value)](#tsisint16value)
+- [ts.isInt32(value)](#tsisint32value)
+- [ts.isUInt8(value)](#tsisuint8value)
+- [ts.isUInt16(value)](#tsisuint16value)
+- [ts.isUInt32(value)](#tsisuint32value)
+
 ### ts.check(value, predicate, [defaultValue])
 
 Each of the following expressions resolve to the `<value>`:
