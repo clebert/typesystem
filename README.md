@@ -72,6 +72,7 @@ function readFile(filename, options, callback) {
 - [ts.isInt8(value)](#tsisint8value)
 - [ts.isInt16(value)](#tsisint16value)
 - [ts.isInt32(value)](#tsisint32value)
+- [ts.isUInt(value)](#tsisuintvalue)
 - [ts.isUInt8(value)](#tsisuint8value)
 - [ts.isUInt16(value)](#tsisuint16value)
 - [ts.isUInt32(value)](#tsisuint32value)
@@ -270,6 +271,15 @@ Each of the following expressions resolve to `true`:
 ```javascript
 ts.isInt32(-2147483648);
 ts.isInt32(2147483647);
+```
+
+### ts.isUInt(value)
+
+Each of the following expressions resolve to `true`:
+
+```javascript
+ts.isUInt8(0);
+ts.isUInt8(9007199254740991);
 ```
 
 ### ts.isUInt8(value)

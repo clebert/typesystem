@@ -195,6 +195,10 @@ describe('ts', function () {
         testInt(ts.isInt32, 2147483647, -2147483648);
     });
 
+    describe('.isUInt()', function () {
+        testInt(ts.isUInt, MAX_SAFE_INTEGER, 0);
+    });
+
     describe('.isUInt8()', function () {
         testInt(ts.isUInt8, 255, 0);
     });
