@@ -20,16 +20,13 @@ var testPredicate = function (predicate, types) {
     });
 };
 
-var MAX_SAFE_INTEGER = 9007199254740991;
-var MIN_SAFE_INTEGER = -9007199254740991;
-
 var testInt = function (predicate, max, min) {
     it('returns false', function () {
         g.getValuesExcept([
             'Number'
         ]).concat([
-            max === MAX_SAFE_INTEGER ? Infinity : max + 1,
-            min === MIN_SAFE_INTEGER ? -Infinity : min - 1,
+            max + 1,
+            min - 1,
             0.1,
             1.1,
             Infinity,
@@ -179,8 +176,10 @@ describe('ts', function () {
         });
     });
 
+    var MAX_SAFE_INTEGER = 9007199254740991;
+
     describe('.isInt()', function () {
-        testInt(ts.isInt, MAX_SAFE_INTEGER, MIN_SAFE_INTEGER);
+        testInt(ts.isInt, MAX_SAFE_INTEGER, -MAX_SAFE_INTEGER);
     });
 
     describe('.isInt8()', function () {

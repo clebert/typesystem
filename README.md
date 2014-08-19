@@ -278,8 +278,8 @@ ts.isInt32(2147483647);
 Each of the following expressions resolve to `true`:
 
 ```javascript
-ts.isUInt8(0);
-ts.isUInt8(9007199254740991);
+ts.isUInt(0);
+ts.isUInt(9007199254740991);
 ```
 
 ### ts.isUInt8(value)
