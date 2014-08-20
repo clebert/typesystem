@@ -29,6 +29,7 @@ var testInt = function (predicate, max, min) {
             min - 1,
             0.1,
             1.1,
+            3.141592653589793,
             Infinity,
             NaN
         ]).forEach(function (value) {
@@ -148,8 +149,8 @@ describe('ts', function () {
         ]);
     });
 
-    describe('.isFloat()', function () {
-        var predicate = ts.isFloat;
+    describe('.isFinite()', function () {
+        var predicate = ts.isFinite;
 
         it('returns false', function () {
             g.getValuesExcept([
@@ -168,6 +169,7 @@ describe('ts', function () {
                 Number.MIN_VALUE,
                 0.1,
                 1.1,
+                3.141592653589793,
                 0,
                 1
             ].forEach(function (value) {

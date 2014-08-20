@@ -67,7 +67,7 @@ function readFile(filename, options, callback) {
 - [ts.isString(value)](#tsisstringvalue)
 - [ts.isUndefined(value)](#tsisundefinedvalue)
 - [ts.isVoid(value)](#tsisvoidvalue)
-- [ts.isFloat(value)](#tsisfloatvalue)
+- [ts.isFinite(value)](#tsisfinitevalue)
 - [ts.isInt(value)](#tsisintvalue)
 - [ts.isInt8(value)](#tsisint8value)
 - [ts.isInt16(value)](#tsisint16value)
@@ -229,12 +229,12 @@ ts.isVoid(null);
 ts.isVoid(undefined);
 ```
 
-### ts.isFloat(value)
+### ts.isFinite(value)
 
 The following expression resolves to `true`:
 
 ```javascript
-ts.isFloat(3.141592653589793);
+ts.isFinite(3.141592653589793);
 ```
 
 ### ts.isInt(value)
