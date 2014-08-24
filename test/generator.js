@@ -1,4 +1,4 @@
-/* eslint no-new-wrappers: 0 */
+/* jshint -W053 */
 
 'use strict';
 
