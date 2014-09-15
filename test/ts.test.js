@@ -178,6 +178,31 @@ describe('ts', function () {
         });
     });
 
+    describe('.isNaN()', function () {
+        var predicate = ts.isNaN;
+
+        it('returns false', function () {
+            g.getValuesExcept([
+                'Number'
+            ]).concat([
+                Number.MAX_VALUE,
+                Number.MIN_VALUE,
+                0.1,
+                1.1,
+                3.141592653589793,
+                0,
+                1,
+                Infinity
+            ]).forEach(function (value) {
+                assert.strictEqual(predicate(value), false);
+            });
+        });
+
+        it('returns true', function () {
+            assert.strictEqual(predicate(NaN), true);
+        });
+    });
+
     var MAX_SAFE_INTEGER = 9007199254740991;
 
     describe('.isInt()', function () {

@@ -68,6 +68,7 @@ function readFile(filename, options, callback) {
 - [ts.isUndefined(value)](#tsisundefinedvalue)
 - [ts.isVoid(value)](#tsisvoidvalue)
 - [ts.isFinite(value)](#tsisfinitevalue)
+- [ts.isNaN(value)](#tsisnanvalue)
 - [ts.isInt(value)](#tsisintvalue)
 - [ts.isInt8(value)](#tsisint8value)
 - [ts.isInt16(value)](#tsisint16value)
@@ -235,6 +236,14 @@ The following expression resolves to `true`:
 
 ```javascript
 ts.isFinite(3.141592653589793);
+```
+
+### ts.isNaN(value)
+
+The following expression resolves to `true`:
+
+```javascript
+ts.isNaN(NaN);
 ```
 
 ### ts.isInt(value)

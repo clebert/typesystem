@@ -75,6 +75,9 @@ describe('generator', function () {
             assert.deepEqual(serialize(generator.getValues([
                 'Number'
             ])), [
+                'number:0.1',
+                'number:1.1',
+                'number:3.141592653589793',
                 'number:0',
                 'number:1',
                 'number:Infinity',

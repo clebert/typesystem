@@ -34,6 +34,9 @@ var valuesMap = {
         null
     ],
     Number: [
+        0.1,
+        1.1,
+        3.141592653589793,
         0,
         1,
         Infinity,
