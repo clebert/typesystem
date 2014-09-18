@@ -83,8 +83,8 @@ function readFile(filename, options, callback) {
 Each of the following expressions resolve to the `<value>`:
 
 ```javascript
-ts.check('abc', ts.isString);
-ts.check('abc', ts.isString, 'xyz');
+ts.check('foo', ts.isString);
+ts.check('foo', ts.isString, 'bar');
 
 ts.check(0, ts.isInt);
 ts.check(0, ts.isInt, 123);
@@ -96,18 +96,18 @@ ts.check(undefined, ts.isVoid);
 Each of the following expressions resolve to the `<defaultValue>`:
 
 ```javascript
-ts.check(null, ts.isString, 'xyz');
-ts.check(undefined, ts.isString, 'xyz');
+ts.check(null, ts.isString, 'bar');
+ts.check(undefined, ts.isString, 'bar');
 ```
 
 Each of the following expressions throw a `TypeError`:
 
 ```javascript
 ts.check(0, ts.isString);
-ts.check(0, ts.isString, 'xyz');
+ts.check(0, ts.isString, 'bar');
 
-ts.check('abc', ts.isInt);
-ts.check('abc', ts.isInt, 123);
+ts.check('foo', ts.isInt);
+ts.check('foo', ts.isInt, 123);
 
 ts.check(null, ts.isString);
 ts.check(undefined, ts.isString);
@@ -181,11 +181,10 @@ ts.isNull(null);
 Each of the following expressions resolve to `true`:
 
 ```javascript
-ts.isNumber(0);
-ts.isNumber(1);
-ts.isNumber(1.1);
-ts.isNumber(Infinity);
 ts.isNumber(NaN);
+ts.isNumber(Infinity);
+ts.isNumber(Number.MIN_VALUE);
+ts.isNumber(Number.MAX_VALUE);
 ```
 
 ### ts.isObject(value)
@@ -201,16 +200,15 @@ ts.isObject({});
 The following expression resolves to `true`:
 
 ```javascript
-ts.isRegExp(new RegExp());
+ts.isRegExp(/(?:)/);
 ```
 
 ### ts.isString(value)
 
-Each of the following expressions resolve to `true`:
+The following expression resolves to `true`:
 
 ```javascript
 ts.isString('');
-ts.isString('dummy');
 ```
 
 ### ts.isUndefined(value)
@@ -232,10 +230,11 @@ ts.isVoid(undefined);
 
 ### ts.isFinite(value)
 
-The following expression resolves to `true`:
+Each of the following expressions resolve to `true`:
 
 ```javascript
-ts.isFinite(3.141592653589793);
+ts.isFinite(Number.MIN_VALUE);
+ts.isFinite(Number.MAX_VALUE);
 ```
 
 ### ts.isNaN(value)
