@@ -22,7 +22,7 @@ var testPredicate = function (predicate, types) {
 
 var MAX_SAFE_INTEGER = 9007199254740991;
 
-var testInt = function (predicate, max, min) {
+var testInt = function (predicate, min, max) {
     it('returns false', function () {
         g.getValuesExcept([
             'Number'
@@ -62,8 +62,8 @@ describe('ts', function () {
         };
 
         it('returns the <value>', function () {
-            assert.strictEqual(ts.check('abc', truthy), 'abc');
-            assert.strictEqual(ts.check('abc', truthy, 'xyz'), 'abc');
+            assert.strictEqual(ts.check('foo', truthy), 'foo');
+            assert.strictEqual(ts.check('foo', truthy, 'bar'), 'foo');
 
             assert.strictEqual(ts.check(0, truthy), 0);
             assert.strictEqual(ts.check(0, truthy, 123), 0);
@@ -73,28 +73,28 @@ describe('ts', function () {
         });
 
         it('returns the <defaultValue>', function () {
-            assert.strictEqual(ts.check(null, truthy, 'xyz'), 'xyz');
-            assert.strictEqual(ts.check(null, falsy, 'xyz'), 'xyz');
+            assert.strictEqual(ts.check(null, truthy, 'bar'), 'bar');
+            assert.strictEqual(ts.check(null, falsy, 'bar'), 'bar');
 
-            assert.strictEqual(ts.check(void 0, truthy, 'xyz'), 'xyz');
-            assert.strictEqual(ts.check(void 0, falsy, 'xyz'), 'xyz');
+            assert.strictEqual(ts.check(void 0, truthy, 'bar'), 'bar');
+            assert.strictEqual(ts.check(void 0, falsy, 'bar'), 'bar');
         });
 
         it('throws a type error', function () {
             assert.throwsError(function () {
-                ts.check('abc', falsy);
-            }, 'TypeError', 'Illegal argument: "abc"');
+                ts.check('foo', falsy);
+            }, 'TypeError', 'Illegal argument: "foo"');
 
             assert.throwsError(function () {
-                ts.check('abc', falsy, 'xyz');
-            }, 'TypeError', 'Illegal argument: "abc"');
+                ts.check('foo', falsy, 'bar');
+            }, 'TypeError', 'Illegal argument: "foo"');
 
             assert.throwsError(function () {
                 ts.check(0, falsy);
             }, 'TypeError', 'Illegal argument: 0');
 
             assert.throwsError(function () {
-                ts.check(0, falsy, 'xyz');
+                ts.check(0, falsy, 'bar');
             }, 'TypeError', 'Illegal argument: 0');
 
             assert.throwsError(function () {
@@ -110,14 +110,14 @@ describe('ts', function () {
             var called = 0;
 
             var predicate = function (value) {
-                assert.strictEqual(value, 'abc');
+                assert.strictEqual(value, 'foo');
 
                 called += 1;
 
                 return true;
             };
 
-            ts.check('abc', predicate);
+            ts.check('foo', predicate);
 
             assert.strictEqual(called, 1);
         });
@@ -210,34 +210,34 @@ describe('ts', function () {
     });
 
     describe('.isInt()', function () {
-        testInt(ts.isInt, MAX_SAFE_INTEGER, -MAX_SAFE_INTEGER);
+        testInt(ts.isInt, -MAX_SAFE_INTEGER, MAX_SAFE_INTEGER);
     });
 
     describe('.isInt8()', function () {
-        testInt(ts.isInt8, 127, -128);
+        testInt(ts.isInt8, -128, 127);
     });
 
     describe('.isInt16()', function () {
-        testInt(ts.isInt16, 32767, -32768);
+        testInt(ts.isInt16, -32768, 32767);
     });
 
     describe('.isInt32()', function () {
-        testInt(ts.isInt32, 2147483647, -2147483648);
+        testInt(ts.isInt32, -2147483648, 2147483647);
     });
 
     describe('.isUInt()', function () {
-        testInt(ts.isUInt, MAX_SAFE_INTEGER, 0);
+        testInt(ts.isUInt, 0, MAX_SAFE_INTEGER);
     });
 
     describe('.isUInt8()', function () {
-        testInt(ts.isUInt8, 255, 0);
+        testInt(ts.isUInt8, 0, 255);
     });
 
     describe('.isUInt16()', function () {
-        testInt(ts.isUInt16, 65535, 0);
+        testInt(ts.isUInt16, 0, 65535);
     });
 
     describe('.isUInt32()', function () {
-        testInt(ts.isUInt32, 4294967295, 0);
+        testInt(ts.isUInt32, 0, 4294967295);
     });
 });
