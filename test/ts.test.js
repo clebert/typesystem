@@ -20,18 +20,20 @@ var testPredicate = function (predicate, types) {
     });
 };
 
+var MAX_SAFE_INTEGER = 9007199254740991;
+
 var testInt = function (predicate, max, min) {
     it('returns false', function () {
         g.getValuesExcept([
             'Number'
         ]).concat([
-            max + 1,
-            min - 1,
-            0.1,
-            1.1,
-            3.141592653589793,
+            NaN,
+            -Infinity,
             Infinity,
-            NaN
+            -Math.PI,
+            Math.PI,
+            min - 1,
+            max + 1
         ]).forEach(function (value) {
             assert.strictEqual(predicate(value), false);
         });
@@ -39,10 +41,10 @@ var testInt = function (predicate, max, min) {
 
     it('returns true', function () {
         [
-            max,
             min,
-            0,
-            1
+            max,
+            -0,
+            0
         ].forEach(function (value) {
             assert.strictEqual(predicate(value), true);
         });
@@ -156,8 +158,9 @@ describe('ts', function () {
             g.getValuesExcept([
                 'Number'
             ]).concat([
-                Infinity,
-                NaN
+                NaN,
+                -Infinity,
+                Infinity
             ]).forEach(function (value) {
                 assert.strictEqual(predicate(value), false);
             });
@@ -165,13 +168,14 @@ describe('ts', function () {
 
         it('returns true', function () {
             [
-                Number.MAX_VALUE,
+                -Math.PI,
+                Math.PI,
                 Number.MIN_VALUE,
-                0.1,
-                1.1,
-                3.141592653589793,
-                0,
-                1
+                Number.MAX_VALUE,
+                -MAX_SAFE_INTEGER,
+                MAX_SAFE_INTEGER,
+                -0,
+                0
             ].forEach(function (value) {
                 assert.strictEqual(predicate(value), true);
             });
@@ -185,14 +189,16 @@ describe('ts', function () {
             g.getValuesExcept([
                 'Number'
             ]).concat([
-                Number.MAX_VALUE,
+                -Infinity,
+                Infinity,
+                -Math.PI,
+                Math.PI,
                 Number.MIN_VALUE,
-                0.1,
-                1.1,
-                3.141592653589793,
-                0,
-                1,
-                Infinity
+                Number.MAX_VALUE,
+                -MAX_SAFE_INTEGER,
+                MAX_SAFE_INTEGER,
+                -0,
+                0
             ]).forEach(function (value) {
                 assert.strictEqual(predicate(value), false);
             });
@@ -202,8 +208,6 @@ describe('ts', function () {
             assert.strictEqual(predicate(NaN), true);
         });
     });
-
-    var MAX_SAFE_INTEGER = 9007199254740991;
 
     describe('.isInt()', function () {
         testInt(ts.isInt, MAX_SAFE_INTEGER, -MAX_SAFE_INTEGER);

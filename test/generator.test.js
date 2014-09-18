@@ -10,8 +10,17 @@ var serialize = function (values) {
         var type = typeof value;
 
         switch (type) {
-            case 'boolean':
             case 'number':
+                if (value === Number.MIN_VALUE) {
+                    return 'number:MIN_VALUE';
+                }
+
+                if (value === Number.MAX_VALUE) {
+                    return 'number:MAX_VALUE';
+                }
+
+                return 'number:' + value;
+            case 'boolean':
             case 'string':
                 return type + ':' + value;
             default:
@@ -32,6 +41,7 @@ describe('generator', function () {
             assert.deepEqual(serialize(generator.getValues([
                 'Array'
             ])), [
+                '[object Array]',
                 '[object Array]'
             ]);
 
@@ -63,6 +73,7 @@ describe('generator', function () {
             assert.deepEqual(serialize(generator.getValues([
                 'Function'
             ])), [
+                '[object Function]',
                 '[object Function]'
             ]);
 
@@ -75,24 +86,30 @@ describe('generator', function () {
             assert.deepEqual(serialize(generator.getValues([
                 'Number'
             ])), [
-                'number:0.1',
-                'number:1.1',
-                'number:3.141592653589793',
-                'number:0',
-                'number:1',
+                'number:NaN',
+                'number:-Infinity',
                 'number:Infinity',
-                'number:NaN'
+                'number:-3.141592653589793',
+                'number:3.141592653589793',
+                'number:MIN_VALUE',
+                'number:MAX_VALUE',
+                'number:-9007199254740991',
+                'number:9007199254740991',
+                'number:0',
+                'number:0'
             ]);
 
             assert.deepEqual(serialize(generator.getValues([
                 'Object'
             ])), [
+                '[object Object]',
                 '[object Object]'
             ]);
 
             assert.deepEqual(serialize(generator.getValues([
                 'RegExp'
             ])), [
+                '[object RegExp]',
                 '[object RegExp]'
             ]);
 
@@ -100,12 +117,13 @@ describe('generator', function () {
                 'String'
             ])), [
                 'string:',
-                'string:dummy'
+                'string:foo'
             ]);
 
             assert.deepEqual(serialize(generator.getValues([
                 'Undefined'
             ])), [
+                '[object Undefined]',
                 '[object Undefined]'
             ]);
 
@@ -127,6 +145,7 @@ describe('generator', function () {
             ])), [
                 '[object Null]',
                 '[object Undefined]',
+                '[object Undefined]',
                 '[object Error]',
                 '[object Error]',
                 '[object Error]',
@@ -147,6 +166,7 @@ describe('generator', function () {
             ])), [
                 '[object Arguments]',
                 '[object Array]',
+                '[object Array]',
                 '[object Date]',
                 '[object Error]',
                 '[object Error]',
@@ -156,9 +176,13 @@ describe('generator', function () {
                 '[object Error]',
                 '[object Error]',
                 '[object Function]',
+                '[object Function]',
                 '[object Null]',
                 '[object Object]',
+                '[object Object]',
                 '[object RegExp]',
+                '[object RegExp]',
+                '[object Undefined]',
                 '[object Undefined]',
                 '[object global]',
                 '[object JSON]',

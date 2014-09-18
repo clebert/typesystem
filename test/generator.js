@@ -1,6 +1,8 @@
-/* jshint -W053 */
+/* jshint -W009, -W010, -W053, -W054 */
 
 'use strict';
+
+var MAX_SAFE_INTEGER = 9007199254740991;
 
 var valuesMap = {
     Arguments: [
@@ -9,7 +11,8 @@ var valuesMap = {
         }())
     ],
     Array: [
-        []
+        [],
+        new Array()
     ],
     Boolean: [
         false,
@@ -28,31 +31,39 @@ var valuesMap = {
         new URIError()
     ],
     Function: [
-        function () {}
+        function () {},
+        new Function()
     ],
     Null: [
         null
     ],
     Number: [
-        0.1,
-        1.1,
-        3.141592653589793,
-        0,
-        1,
+        NaN,
+        -Infinity,
         Infinity,
-        NaN
+        -Math.PI,
+        Math.PI,
+        Number.MIN_VALUE,
+        Number.MAX_VALUE,
+        -MAX_SAFE_INTEGER,
+        MAX_SAFE_INTEGER,
+        -0,
+        0
     ],
     Object: [
-        {}
+        {},
+        new Object()
     ],
     RegExp: [
+        /(?:)/,
         new RegExp()
     ],
     String: [
         '',
-        'dummy'
+        'foo'
     ],
     Undefined: [
+        undefined,
         void 0
     ],
     Misc: [
