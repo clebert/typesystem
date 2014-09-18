@@ -1,6 +1,6 @@
 {
     "name": "typesystem",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "description": "Sophisticated Type Checking for JavaScript.",
     "keywords": [
         "type",
