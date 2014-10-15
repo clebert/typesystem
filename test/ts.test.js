@@ -8,51 +8,20 @@ var g      = require('./generator');
 
 var testPredicate = function (predicate, types) {
     it('returns false', function () {
-        g.getValuesExcept(types).forEach(function (value) {
+        g.generateAllValuesExcept(types).forEach(function (value) {
             assert.strictEqual(predicate(value), false);
         });
     });
 
     it('returns true', function () {
-        g.getValues(types).forEach(function (value) {
-            assert.strictEqual(predicate(value), true);
-        });
-    });
-};
-
-var MAX_SAFE_INTEGER = 9007199254740991;
-
-var testInt = function (predicate, min, max) {
-    it('returns false', function () {
-        g.getValuesExcept([
-            'Number'
-        ]).concat([
-            NaN,
-            -Infinity,
-            Infinity,
-            -Math.PI,
-            Math.PI,
-            min - 1,
-            max + 1
-        ]).forEach(function (value) {
-            assert.strictEqual(predicate(value), false);
-        });
-    });
-
-    it('returns true', function () {
-        [
-            min,
-            max,
-            -0,
-            0
-        ].forEach(function (value) {
+        g.generateAllValues(types).forEach(function (value) {
             assert.strictEqual(predicate(value), true);
         });
     });
 };
 
 describe('ts', function () {
-    describe('.check()', function () {
+    describe('.checkArgument()', function () {
         var truthy = function () {
             return 1;
         };
@@ -61,52 +30,52 @@ describe('ts', function () {
             return 0;
         };
 
-        it('returns the <value>', function () {
-            assert.strictEqual(ts.check('foo', truthy), 'foo');
-            assert.strictEqual(ts.check('foo', truthy, 'bar'), 'foo');
+        it('returns the given value', function () {
+            assert.strictEqual(ts.checkArgument('foo', truthy), 'foo');
+            assert.strictEqual(ts.checkArgument('foo', truthy, 'bar'), 'foo');
 
-            assert.strictEqual(ts.check(0, truthy), 0);
-            assert.strictEqual(ts.check(0, truthy, 123), 0);
+            assert.strictEqual(ts.checkArgument(0, truthy), 0);
+            assert.strictEqual(ts.checkArgument(0, truthy, 123), 0);
 
-            assert.strictEqual(ts.check(null, truthy), null);
-            assert.strictEqual(ts.check(void 0, truthy), void 0);
+            assert.strictEqual(ts.checkArgument(null, truthy), null);
+            assert.strictEqual(ts.checkArgument(void 0, truthy), void 0);
         });
 
-        it('returns the <defaultValue>', function () {
-            assert.strictEqual(ts.check(null, truthy, 'bar'), 'bar');
-            assert.strictEqual(ts.check(null, falsy, 'bar'), 'bar');
+        it('returns the given default value', function () {
+            assert.strictEqual(ts.checkArgument(null, truthy, 'bar'), 'bar');
+            assert.strictEqual(ts.checkArgument(null, falsy, 'bar'), 'bar');
 
-            assert.strictEqual(ts.check(void 0, truthy, 'bar'), 'bar');
-            assert.strictEqual(ts.check(void 0, falsy, 'bar'), 'bar');
+            assert.strictEqual(ts.checkArgument(void 0, truthy, 'bar'), 'bar');
+            assert.strictEqual(ts.checkArgument(void 0, falsy, 'bar'), 'bar');
         });
 
         it('throws a type error', function () {
             assert.throwsError(function () {
-                ts.check('foo', falsy);
+                ts.checkArgument('foo', falsy);
             }, 'TypeError', 'Illegal argument: "foo"');
 
             assert.throwsError(function () {
-                ts.check('foo', falsy, 'bar');
+                ts.checkArgument('foo', falsy, 'bar');
             }, 'TypeError', 'Illegal argument: "foo"');
 
             assert.throwsError(function () {
-                ts.check(0, falsy);
+                ts.checkArgument(0, falsy);
             }, 'TypeError', 'Illegal argument: 0');
 
             assert.throwsError(function () {
-                ts.check(0, falsy, 'bar');
+                ts.checkArgument(0, falsy, 'bar');
             }, 'TypeError', 'Illegal argument: 0');
 
             assert.throwsError(function () {
-                ts.check(null, falsy);
+                ts.checkArgument(null, falsy);
             }, 'TypeError', 'Illegal argument: null');
 
             assert.throwsError(function () {
-                ts.check(void 0, falsy);
+                ts.checkArgument(void 0, falsy);
             }, 'TypeError', 'Illegal argument: undefined');
         });
 
-        it('passes the <value> to the <predicate>', function () {
+        it('passes the given value to the given predicate', function () {
             var called = 0;
 
             var predicate = function (value) {
@@ -117,7 +86,7 @@ describe('ts', function () {
                 return true;
             };
 
-            ts.check('foo', predicate);
+            ts.checkArgument('foo', predicate);
 
             assert.strictEqual(called, 1);
         });
@@ -144,41 +113,65 @@ describe('ts', function () {
         });
     });
 
-    describe('.isVoid()', function () {
-        testPredicate(ts.isVoid, [
-            'Null',
-            'Undefined'
-        ]);
-    });
-
     describe('.isFinite()', function () {
         var predicate = ts.isFinite;
 
         it('returns false', function () {
-            g.getValuesExcept([
+            g.generateAllValuesExcept([
                 'Number'
             ]).concat([
+                Infinity,
                 NaN,
-                -Infinity,
-                Infinity
+                -Number.MAX_VALUE,
+                Number.MAX_VALUE,
+                -9007199254740992,
+                9007199254740992
             ]).forEach(function (value) {
                 assert.strictEqual(predicate(value), false);
             });
+
+            assert.strictEqual(predicate(0, 1, 2), false);
+            assert.strictEqual(predicate(3, 1, 2), false);
         });
 
         it('returns true', function () {
-            [
-                -Math.PI,
-                Math.PI,
+            assert.strictEqual(predicate(Number.MIN_VALUE), true);
+            assert.strictEqual(predicate(-9007199254740991), true);
+            assert.strictEqual(predicate(9007199254740991), true);
+
+            assert.strictEqual(predicate(1, 1, 2), true);
+            assert.strictEqual(predicate(2, 1, 2), true);
+        });
+    });
+
+    describe('.isInteger()', function () {
+        var predicate = ts.isInteger;
+
+        it('returns false', function () {
+            g.generateAllValuesExcept([
+                'Number'
+            ]).concat([
+                Infinity,
+                NaN,
                 Number.MIN_VALUE,
+                -Number.MAX_VALUE,
                 Number.MAX_VALUE,
-                -MAX_SAFE_INTEGER,
-                MAX_SAFE_INTEGER,
-                -0,
-                0
-            ].forEach(function (value) {
-                assert.strictEqual(predicate(value), true);
+                -9007199254740992,
+                9007199254740992
+            ]).forEach(function (value) {
+                assert.strictEqual(predicate(value), false);
             });
+
+            assert.strictEqual(predicate(0, 1, 2), false);
+            assert.strictEqual(predicate(3, 1, 2), false);
+        });
+
+        it('returns true', function () {
+            assert.strictEqual(predicate(-9007199254740991), true);
+            assert.strictEqual(predicate(9007199254740991), true);
+
+            assert.strictEqual(predicate(1, 1, 2), true);
+            assert.strictEqual(predicate(2, 1, 2), true);
         });
     });
 
@@ -186,19 +179,12 @@ describe('ts', function () {
         var predicate = ts.isNaN;
 
         it('returns false', function () {
-            g.getValuesExcept([
+            g.generateAllValuesExcept([
                 'Number'
             ]).concat([
-                -Infinity,
                 Infinity,
-                -Math.PI,
-                Math.PI,
                 Number.MIN_VALUE,
-                Number.MAX_VALUE,
-                -MAX_SAFE_INTEGER,
-                MAX_SAFE_INTEGER,
-                -0,
-                0
+                Number.MAX_VALUE
             ]).forEach(function (value) {
                 assert.strictEqual(predicate(value), false);
             });
@@ -209,35 +195,10 @@ describe('ts', function () {
         });
     });
 
-    describe('.isInt()', function () {
-        testInt(ts.isInt, -MAX_SAFE_INTEGER, MAX_SAFE_INTEGER);
-    });
-
-    describe('.isInt8()', function () {
-        testInt(ts.isInt8, -128, 127);
-    });
-
-    describe('.isInt16()', function () {
-        testInt(ts.isInt16, -32768, 32767);
-    });
-
-    describe('.isInt32()', function () {
-        testInt(ts.isInt32, -2147483648, 2147483647);
-    });
-
-    describe('.isUInt()', function () {
-        testInt(ts.isUInt, 0, MAX_SAFE_INTEGER);
-    });
-
-    describe('.isUInt8()', function () {
-        testInt(ts.isUInt8, 0, 255);
-    });
-
-    describe('.isUInt16()', function () {
-        testInt(ts.isUInt16, 0, 65535);
-    });
-
-    describe('.isUInt32()', function () {
-        testInt(ts.isUInt32, 0, 4294967295);
+    describe('.isVoid()', function () {
+        testPredicate(ts.isVoid, [
+            'Null',
+            'Undefined'
+        ]);
     });
 });

@@ -1,8 +1,6 @@
-/* jshint -W009, -W010, -W053, -W054 */
+/* jshint -W053 */
 
 'use strict';
-
-var MAX_SAFE_INTEGER = 9007199254740991;
 
 var valuesMap = {
     Arguments: [
@@ -11,8 +9,7 @@ var valuesMap = {
         }())
     ],
     Array: [
-        [],
-        new Array()
+        []
     ],
     Boolean: [
         false,
@@ -31,40 +28,28 @@ var valuesMap = {
         new URIError()
     ],
     Function: [
-        function () {},
-        new Function()
+        function () {}
     ],
     Null: [
         null
     ],
     Number: [
         NaN,
-        -Infinity,
         Infinity,
-        -Math.PI,
-        Math.PI,
         Number.MIN_VALUE,
-        Number.MAX_VALUE,
-        -MAX_SAFE_INTEGER,
-        MAX_SAFE_INTEGER,
-        -0,
-        0
+        Number.MAX_VALUE
     ],
     Object: [
-        {},
-        new Object()
+        {}
     ],
     RegExp: [
-        /(?:)/,
-        new RegExp()
+        /(?:)/
     ],
     String: [
-        '',
-        'foo'
+        ''
     ],
     Undefined: [
-        undefined,
-        void 0
+        undefined
     ],
     Misc: [
         global,
@@ -76,13 +61,13 @@ var valuesMap = {
     ]
 };
 
-exports.getValues = function (types) {
+exports.generateAllValues = function (types) {
     return types.reduce(function (values, type) {
         return values.concat(valuesMap[type]);
     }, []);
 };
 
-exports.getValuesExcept = function (typesToExclude) {
+exports.generateAllValuesExcept = function (typesToExclude) {
     return Object.keys(valuesMap).filter(function (type) {
         return typesToExclude.every(function (typeToExclude) {
             return type !== typeToExclude;

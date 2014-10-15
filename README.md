@@ -26,40 +26,20 @@ npm install typesystem --save
 var ts = require('typesystem');
 ```
 
-## Usage
-
-Example implementation of [fs.readFile(filename, [options], callback)](http://nodejs.org/api/fs.html#fs_fs_readfile_filename_options_callback):
-
-```javascript
-function readFile(filename, options, callback) {
-    ts.check(filename, ts.isString);
-
-    if (arguments.length === 2) {
-        callback = options;
-        options  = null;
-    }
-
-    options          = ts.check(options, ts.isObject, {});
-    options.encoding = ts.check(options.encoding, ts.isString, null);
-    options.flag     = ts.check(options.flag, ts.isString, 'r');
-
-    ts.check(callback, ts.isFunction);
-
-    // ...
-}
-```
-
 ## API
 
 ### Overview
 
-- [ts.check(value, predicate, [defaultValue])](#tscheckvalue-predicate-defaultvalue)
+- [ts.checkArgument(value, predicate, [defaultValue])](#tscheckargumentvalue-predicate-defaultvalue)
 - [ts.isArguments(value)](#tsisargumentsvalue)
 - [ts.isArray(value)](#tsisarrayvalue)
 - [ts.isBoolean(value)](#tsisbooleanvalue)
 - [ts.isDate(value)](#tsisdatevalue)
 - [ts.isError(value)](#tsiserrorvalue)
+- [ts.isFinite(value, [min], [max])](#tsisfinitevalue-min-max)
 - [ts.isFunction(value)](#tsisfunctionvalue)
+- [ts.isInteger(value, [min], [max])](#tsisintegervalue-min-max)
+- [ts.isNaN(value)](#tsisnanvalue)
 - [ts.isNull(value)](#tsisnullvalue)
 - [ts.isNumber(value)](#tsisnumbervalue)
 - [ts.isObject(value)](#tsisobjectvalue)
@@ -67,254 +47,140 @@ function readFile(filename, options, callback) {
 - [ts.isString(value)](#tsisstringvalue)
 - [ts.isUndefined(value)](#tsisundefinedvalue)
 - [ts.isVoid(value)](#tsisvoidvalue)
-- [ts.isFinite(value)](#tsisfinitevalue)
-- [ts.isNaN(value)](#tsisnanvalue)
-- [ts.isInt(value)](#tsisintvalue)
-- [ts.isInt8(value)](#tsisint8value)
-- [ts.isInt16(value)](#tsisint16value)
-- [ts.isInt32(value)](#tsisint32value)
-- [ts.isUInt(value)](#tsisuintvalue)
-- [ts.isUInt8(value)](#tsisuint8value)
-- [ts.isUInt16(value)](#tsisuint16value)
-- [ts.isUInt32(value)](#tsisuint32value)
 
-### ts.check(value, predicate, [defaultValue])
-
-Each of the following expressions resolve to the `<value>`:
+### ts.checkArgument(value, predicate, [defaultValue])
 
 ```javascript
-ts.check('foo', ts.isString);
-ts.check('foo', ts.isString, 'bar');
+ts.checkArgument('foo', ts.isString);            // returns 'foo'
+ts.checkArgument('foo', ts.isString, 'bar');     // returns 'foo'
 
-ts.check(0, ts.isInt);
-ts.check(0, ts.isInt, 123);
+ts.checkArgument('foo', ts.isInteger);           // throws a type error
+ts.checkArgument('foo', ts.isInteger, 123);      // throws a type error
 
-ts.check(null, ts.isVoid);
-ts.check(undefined, ts.isVoid);
-```
+ts.checkArgument(0, ts.isInteger);               // returns 0
+ts.checkArgument(0, ts.isInteger, 123);          // returns 0
 
-Each of the following expressions resolve to the `<defaultValue>`:
+ts.checkArgument(0, ts.isString);                // throws a type error
+ts.checkArgument(0, ts.isString, 'bar');         // throws a type error
 
-```javascript
-ts.check(null, ts.isString, 'bar');
-ts.check(undefined, ts.isString, 'bar');
-```
+ts.checkArgument(null, ts.isVoid);               // returns null
+ts.checkArgument(undefined, ts.isVoid);          // returns undefined
 
-Each of the following expressions throw a `TypeError`:
+ts.checkArgument(null, ts.isString);             // throws a type error
+ts.checkArgument(undefined, ts.isString);        // throws a type error
 
-```javascript
-ts.check(0, ts.isString);
-ts.check(0, ts.isString, 'bar');
-
-ts.check('foo', ts.isInt);
-ts.check('foo', ts.isInt, 123);
-
-ts.check(null, ts.isString);
-ts.check(undefined, ts.isString);
+ts.checkArgument(null, ts.isString, 'bar');      // returns 'bar'
+ts.checkArgument(undefined, ts.isString, 'bar'); // returns 'bar'
 ```
 
 ### ts.isArguments(value)
 
-The following expression resolves to `true`:
-
 ```javascript
-ts.isArguments(arguments);
+ts.isArguments(arguments); // returns true
 ```
 
 ### ts.isArray(value)
 
-The following expression resolves to `true`:
-
 ```javascript
-ts.isArray([]);
+ts.isArray([]); // returns true
 ```
 
 ### ts.isBoolean(value)
 
-Each of the following expressions resolve to `true`:
-
 ```javascript
-ts.isBoolean(false);
-ts.isBoolean(true);
+ts.isBoolean(false); // returns true
+ts.isBoolean(true);  // returns true
 ```
 
 ### ts.isDate(value)
 
-The following expression resolves to `true`:
-
 ```javascript
-ts.isDate(new Date());
+ts.isDate(new Date()); // returns true
 ```
 
 ### ts.isError(value)
 
-Each of the following expressions resolve to `true`:
+```javascript
+ts.isError(new Error());          // returns true
+ts.isError(new EvalError());      // returns true
+ts.isError(new RangeError());     // returns true
+ts.isError(new ReferenceError()); // returns true
+ts.isError(new SyntaxError());    // returns true
+ts.isError(new TypeError());      // returns true
+ts.isError(new URIError());       // returns true
+```
+
+### ts.isFinite(value, [min], [max])
 
 ```javascript
-ts.isError(new Error());
-ts.isError(new EvalError());
-ts.isError(new RangeError());
-ts.isError(new ReferenceError());
-ts.isError(new SyntaxError());
-ts.isError(new TypeError());
-ts.isError(new URIError());
+ts.isFinite(Number.MIN_VALUE);         // returns true
+ts.isFinite(-Number.MAX_SAFE_INTEGER); // returns true
+ts.isFinite(+Number.MAX_SAFE_INTEGER); // returns true
 ```
 
 ### ts.isFunction(value)
 
-The following expression resolves to `true`:
-
 ```javascript
-ts.isFunction(function () {});
+ts.isFunction(function () {}); // returns true
 ```
 
-### ts.isNull(value)
-
-The following expression resolves to `true`:
+### ts.isInteger(value, [min], [max])
 
 ```javascript
-ts.isNull(null);
-```
-
-### ts.isNumber(value)
-
-Each of the following expressions resolve to `true`:
-
-```javascript
-ts.isNumber(NaN);
-ts.isNumber(Infinity);
-ts.isNumber(Number.MIN_VALUE);
-ts.isNumber(Number.MAX_VALUE);
-```
-
-### ts.isObject(value)
-
-The following expression resolves to `true`:
-
-```javascript
-ts.isObject({});
-```
-
-### ts.isRegExp(value)
-
-The following expression resolves to `true`:
-
-```javascript
-ts.isRegExp(/(?:)/);
-```
-
-### ts.isString(value)
-
-The following expression resolves to `true`:
-
-```javascript
-ts.isString('');
-```
-
-### ts.isUndefined(value)
-
-The following expression resolves to `true`:
-
-```javascript
-ts.isUndefined(undefined);
-```
-
-### ts.isVoid(value)
-
-Each of the following expressions resolve to `true`:
-
-```javascript
-ts.isVoid(null);
-ts.isVoid(undefined);
-```
-
-### ts.isFinite(value)
-
-Each of the following expressions resolve to `true`:
-
-```javascript
-ts.isFinite(Number.MIN_VALUE);
-ts.isFinite(Number.MAX_VALUE);
+ts.isInteger(-Number.MAX_SAFE_INTEGER); // returns true
+ts.isInteger(+Number.MAX_SAFE_INTEGER); // returns true
 ```
 
 ### ts.isNaN(value)
 
-The following expression resolves to `true`:
-
 ```javascript
-ts.isNaN(NaN);
+ts.isNaN(NaN); // returns true
 ```
 
-### ts.isInt(value)
-
-Each of the following expressions resolve to `true`:
+### ts.isNull(value)
 
 ```javascript
-ts.isInt(-9007199254740991);
-ts.isInt(9007199254740991);
+ts.isNull(null); // returns true
 ```
 
-### ts.isInt8(value)
-
-Each of the following expressions resolve to `true`:
+### ts.isNumber(value)
 
 ```javascript
-ts.isInt8(-128);
-ts.isInt8(127);
+ts.isNumber(NaN);              // returns true
+ts.isNumber(Infinity);         // returns true
+ts.isNumber(Number.MIN_VALUE); // returns true
+ts.isNumber(Number.MAX_VALUE); // returns true
 ```
 
-### ts.isInt16(value)
-
-Each of the following expressions resolve to `true`:
+### ts.isObject(value)
 
 ```javascript
-ts.isInt16(-32768);
-ts.isInt16(32767);
+ts.isObject({}); // returns true
 ```
 
-### ts.isInt32(value)
-
-Each of the following expressions resolve to `true`:
+### ts.isRegExp(value)
 
 ```javascript
-ts.isInt32(-2147483648);
-ts.isInt32(2147483647);
+ts.isRegExp(/(?:)/); // returns true
 ```
 
-### ts.isUInt(value)
-
-Each of the following expressions resolve to `true`:
+### ts.isString(value)
 
 ```javascript
-ts.isUInt(0);
-ts.isUInt(9007199254740991);
+ts.isString(''); // returns true
 ```
 
-### ts.isUInt8(value)
-
-Each of the following expressions resolve to `true`:
+### ts.isUndefined(value)
 
 ```javascript
-ts.isUInt8(0);
-ts.isUInt8(255);
+ts.isUndefined(undefined); // returns true
 ```
 
-### ts.isUInt16(value)
-
-Each of the following expressions resolve to `true`:
+### ts.isVoid(value)
 
 ```javascript
-ts.isUInt16(0);
-ts.isUInt16(65535);
-```
-
-### ts.isUInt32(value)
-
-Each of the following expressions resolve to `true`:
-
-```javascript
-ts.isUInt32(0);
-ts.isUInt32(4294967295);
+ts.isVoid(null);      // returns true
+ts.isVoid(undefined); // returns true
 ```
 
 ## Running Tests

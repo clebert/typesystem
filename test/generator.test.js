@@ -30,35 +30,34 @@ var serialize = function (values) {
 };
 
 describe('generator', function () {
-    describe('.getValues()', function () {
-        it('returns an array of all values of the specified <types>', function () {
-            assert.deepEqual(serialize(generator.getValues([
+    describe('.generateAllValues()', function () {
+        it('returns an array of all values of the given types', function () {
+            assert.deepEqual(serialize(generator.generateAllValues([
                 'Arguments'
             ])), [
                 '[object Arguments]'
             ]);
 
-            assert.deepEqual(serialize(generator.getValues([
+            assert.deepEqual(serialize(generator.generateAllValues([
                 'Array'
             ])), [
-                '[object Array]',
                 '[object Array]'
             ]);
 
-            assert.deepEqual(serialize(generator.getValues([
+            assert.deepEqual(serialize(generator.generateAllValues([
                 'Boolean'
             ])), [
                 'boolean:false',
                 'boolean:true'
             ]);
 
-            assert.deepEqual(serialize(generator.getValues([
+            assert.deepEqual(serialize(generator.generateAllValues([
                 'Date'
             ])), [
                 '[object Date]'
             ]);
 
-            assert.deepEqual(serialize(generator.getValues([
+            assert.deepEqual(serialize(generator.generateAllValues([
                 'Error'
             ])), [
                 '[object Error]',
@@ -70,64 +69,52 @@ describe('generator', function () {
                 '[object Error]'
             ]);
 
-            assert.deepEqual(serialize(generator.getValues([
+            assert.deepEqual(serialize(generator.generateAllValues([
                 'Function'
             ])), [
-                '[object Function]',
                 '[object Function]'
             ]);
 
-            assert.deepEqual(serialize(generator.getValues([
+            assert.deepEqual(serialize(generator.generateAllValues([
                 'Null'
             ])), [
                 '[object Null]'
             ]);
 
-            assert.deepEqual(serialize(generator.getValues([
+            assert.deepEqual(serialize(generator.generateAllValues([
                 'Number'
             ])), [
                 'number:NaN',
-                'number:-Infinity',
                 'number:Infinity',
-                'number:-3.141592653589793',
-                'number:3.141592653589793',
                 'number:MIN_VALUE',
-                'number:MAX_VALUE',
-                'number:-9007199254740991',
-                'number:9007199254740991',
-                'number:0',
-                'number:0'
+                'number:MAX_VALUE'
             ]);
 
-            assert.deepEqual(serialize(generator.getValues([
+            assert.deepEqual(serialize(generator.generateAllValues([
                 'Object'
             ])), [
-                '[object Object]',
                 '[object Object]'
             ]);
 
-            assert.deepEqual(serialize(generator.getValues([
+            assert.deepEqual(serialize(generator.generateAllValues([
                 'RegExp'
             ])), [
-                '[object RegExp]',
                 '[object RegExp]'
             ]);
 
-            assert.deepEqual(serialize(generator.getValues([
+            assert.deepEqual(serialize(generator.generateAllValues([
                 'String'
             ])), [
-                'string:',
-                'string:foo'
+                'string:'
             ]);
 
-            assert.deepEqual(serialize(generator.getValues([
+            assert.deepEqual(serialize(generator.generateAllValues([
                 'Undefined'
             ])), [
-                '[object Undefined]',
                 '[object Undefined]'
             ]);
 
-            assert.deepEqual(serialize(generator.getValues([
+            assert.deepEqual(serialize(generator.generateAllValues([
                 'Misc'
             ])), [
                 '[object global]',
@@ -138,13 +125,12 @@ describe('generator', function () {
                 '[object String]'
             ]);
 
-            assert.deepEqual(serialize(generator.getValues([
+            assert.deepEqual(serialize(generator.generateAllValues([
                 'Null',
                 'Undefined',
                 'Error'
             ])), [
                 '[object Null]',
-                '[object Undefined]',
                 '[object Undefined]',
                 '[object Error]',
                 '[object Error]',
@@ -157,15 +143,14 @@ describe('generator', function () {
         });
     });
 
-    describe('.getValuesExcept()', function () {
-        it('returns an array of all values not of the specified <types>', function () {
-            assert.deepEqual(serialize(generator.getValuesExcept([
+    describe('.generateAllValuesExcept()', function () {
+        it('returns an array of all values not of the given types', function () {
+            assert.deepEqual(serialize(generator.generateAllValuesExcept([
                 'Boolean',
                 'Number',
                 'String'
             ])), [
                 '[object Arguments]',
-                '[object Array]',
                 '[object Array]',
                 '[object Date]',
                 '[object Error]',
@@ -176,13 +161,9 @@ describe('generator', function () {
                 '[object Error]',
                 '[object Error]',
                 '[object Function]',
-                '[object Function]',
                 '[object Null]',
                 '[object Object]',
-                '[object Object]',
                 '[object RegExp]',
-                '[object RegExp]',
-                '[object Undefined]',
                 '[object Undefined]',
                 '[object global]',
                 '[object JSON]',
