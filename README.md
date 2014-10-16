@@ -30,7 +30,7 @@ var ts = require('typesystem');
 
 ### Overview
 
-- [ts.MAX_SAFE_INTEGER](#tsmaxsafeinteger)
+- [ts.MAX_SAFE_INTEGER](#tsmax_safe_integer)
 - [ts.checkArgument(value, predicate, [defaultValue])](#tscheckargumentvalue-predicate-defaultvalue)
 - [ts.isArguments(value)](#tsisargumentsvalue)
 - [ts.isArray(value)](#tsisarrayvalue)
