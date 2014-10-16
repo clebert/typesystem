@@ -30,6 +30,7 @@ var ts = require('typesystem');
 
 ### Overview
 
+- [ts.MAX_SAFE_INTEGER](#tsmaxsafeinteger)
 - [ts.checkArgument(value, predicate, [defaultValue])](#tscheckargumentvalue-predicate-defaultvalue)
 - [ts.isArguments(value)](#tsisargumentsvalue)
 - [ts.isArray(value)](#tsisarrayvalue)
@@ -47,6 +48,10 @@ var ts = require('typesystem');
 - [ts.isString(value)](#tsisstringvalue)
 - [ts.isUndefined(value)](#tsisundefinedvalue)
 - [ts.isVoid(value)](#tsisvoidvalue)
+
+### ts.MAX_SAFE_INTEGER
+
+This constant represents the [maximum safe integer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER) in JavaScript (2^53 - 1).
 
 ### ts.checkArgument(value, predicate, [defaultValue])
 
@@ -113,9 +118,9 @@ ts.isError(new URIError());       // returns true
 ### ts.isFinite(value, [min], [max])
 
 ```javascript
-ts.isFinite(Number.MIN_VALUE);         // returns true
-ts.isFinite(-Number.MAX_SAFE_INTEGER); // returns true
-ts.isFinite(+Number.MAX_SAFE_INTEGER); // returns true
+ts.isFinite(Number.MIN_VALUE);     // returns true
+ts.isFinite(-ts.MAX_SAFE_INTEGER); // returns true
+ts.isFinite(+ts.MAX_SAFE_INTEGER); // returns true
 ```
 
 ### ts.isFunction(value)
@@ -127,8 +132,8 @@ ts.isFunction(function () {}); // returns true
 ### ts.isInteger(value, [min], [max])
 
 ```javascript
-ts.isInteger(-Number.MAX_SAFE_INTEGER); // returns true
-ts.isInteger(+Number.MAX_SAFE_INTEGER); // returns true
+ts.isInteger(-ts.MAX_SAFE_INTEGER); // returns true
+ts.isInteger(+ts.MAX_SAFE_INTEGER); // returns true
 ```
 
 ### ts.isNaN(value)

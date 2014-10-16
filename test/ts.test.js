@@ -21,6 +21,12 @@ var testPredicate = function (predicate, types) {
 };
 
 describe('ts', function () {
+    describe('.MAX_SAFE_INTEGER', function () {
+        it('represents the maximum safe integer in JavaScript', function () {
+            assert.strictEqual(ts.MAX_SAFE_INTEGER, 9007199254740991);
+        });
+    });
+
     describe('.checkArgument()', function () {
         var truthy = function () {
             return 1;
@@ -122,20 +128,20 @@ describe('ts', function () {
             ]).concat([
                 Infinity,
                 NaN,
-                -9007199254740992,
-                9007199254740992
+                -ts.MAX_SAFE_INTEGER - Number.MIN_VALUE,
+                +ts.MAX_SAFE_INTEGER + Number.MIN_VALUE
             ]).forEach(function (value) {
                 assert.strictEqual(predicate(value), false);
             });
 
-            assert.strictEqual(predicate(0, 1, 2), false);
-            assert.strictEqual(predicate(3, 1, 2), false);
+            assert.strictEqual(predicate(1 - Number.MIN_VALUE, 1, 2), false);
+            assert.strictEqual(predicate(2 + Number.MIN_VALUE, 1, 2), false);
         });
 
         it('returns true', function () {
             assert.strictEqual(predicate(Number.MIN_VALUE), true);
-            assert.strictEqual(predicate(-9007199254740991), true);
-            assert.strictEqual(predicate(9007199254740991), true);
+            assert.strictEqual(predicate(-ts.MAX_SAFE_INTEGER), true);
+            assert.strictEqual(predicate(+ts.MAX_SAFE_INTEGER), true);
 
             assert.strictEqual(predicate(1, 1, 2), true);
             assert.strictEqual(predicate(2, 1, 2), true);
@@ -152,8 +158,8 @@ describe('ts', function () {
                 Infinity,
                 NaN,
                 Number.MIN_VALUE,
-                -9007199254740992,
-                9007199254740992
+                -ts.MAX_SAFE_INTEGER - 1,
+                +ts.MAX_SAFE_INTEGER + 1
             ]).forEach(function (value) {
                 assert.strictEqual(predicate(value), false);
             });
@@ -163,8 +169,8 @@ describe('ts', function () {
         });
 
         it('returns true', function () {
-            assert.strictEqual(predicate(-9007199254740991), true);
-            assert.strictEqual(predicate(9007199254740991), true);
+            assert.strictEqual(predicate(-ts.MAX_SAFE_INTEGER), true);
+            assert.strictEqual(predicate(+ts.MAX_SAFE_INTEGER), true);
 
             assert.strictEqual(predicate(1, 1, 2), true);
             assert.strictEqual(predicate(2, 1, 2), true);
