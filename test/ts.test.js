@@ -122,8 +122,6 @@ describe('ts', function () {
             ]).concat([
                 Infinity,
                 NaN,
-                -Number.MAX_VALUE,
-                Number.MAX_VALUE,
                 -9007199254740992,
                 9007199254740992
             ]).forEach(function (value) {
@@ -154,8 +152,6 @@ describe('ts', function () {
                 Infinity,
                 NaN,
                 Number.MIN_VALUE,
-                -Number.MAX_VALUE,
-                Number.MAX_VALUE,
                 -9007199254740992,
                 9007199254740992
             ]).forEach(function (value) {
