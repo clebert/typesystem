@@ -128,14 +128,14 @@ describe('ts', function () {
             ]).concat([
                 Infinity,
                 NaN,
-                -ts.MAX_SAFE_INTEGER - Number.MIN_VALUE,
-                +ts.MAX_SAFE_INTEGER + Number.MIN_VALUE
+                -ts.MAX_SAFE_INTEGER - 1,
+                +ts.MAX_SAFE_INTEGER + 1
             ]).forEach(function (value) {
                 assert.strictEqual(predicate(value), false);
             });
 
-            assert.strictEqual(predicate(1 - Number.MIN_VALUE, 1, 2), false);
-            assert.strictEqual(predicate(2 + Number.MIN_VALUE, 1, 2), false);
+            assert.strictEqual(predicate(0, 1, 2), false);
+            assert.strictEqual(predicate(3, 1, 2), false);
         });
 
         it('returns true', function () {
