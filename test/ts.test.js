@@ -119,8 +119,8 @@ describe('ts', function () {
         });
     });
 
-    describe('.isFinite()', function () {
-        var predicate = ts.isFinite;
+    describe('.isDecimal()', function () {
+        var predicate = ts.isDecimal;
 
         it('returns false', function () {
             g.generateAllValuesExcept([
@@ -133,18 +133,12 @@ describe('ts', function () {
             ]).forEach(function (value) {
                 assert.strictEqual(predicate(value), false);
             });
-
-            assert.strictEqual(predicate(0, 1, 2), false);
-            assert.strictEqual(predicate(3, 1, 2), false);
         });
 
         it('returns true', function () {
             assert.strictEqual(predicate(Number.MIN_VALUE), true);
             assert.strictEqual(predicate(-ts.MAX_SAFE_INTEGER), true);
             assert.strictEqual(predicate(+ts.MAX_SAFE_INTEGER), true);
-
-            assert.strictEqual(predicate(1, 1, 2), true);
-            assert.strictEqual(predicate(2, 1, 2), true);
         });
     });
 
@@ -163,17 +157,11 @@ describe('ts', function () {
             ]).forEach(function (value) {
                 assert.strictEqual(predicate(value), false);
             });
-
-            assert.strictEqual(predicate(0, 1, 2), false);
-            assert.strictEqual(predicate(3, 1, 2), false);
         });
 
         it('returns true', function () {
             assert.strictEqual(predicate(-ts.MAX_SAFE_INTEGER), true);
             assert.strictEqual(predicate(+ts.MAX_SAFE_INTEGER), true);
-
-            assert.strictEqual(predicate(1, 1, 2), true);
-            assert.strictEqual(predicate(2, 1, 2), true);
         });
     });
 

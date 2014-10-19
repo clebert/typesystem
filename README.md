@@ -36,10 +36,10 @@ var ts = require('typesystem');
 - [ts.isArray(value)](#tsisarrayvalue)
 - [ts.isBoolean(value)](#tsisbooleanvalue)
 - [ts.isDate(value)](#tsisdatevalue)
+- [ts.isDecimal(value)](#tsisdecimalvalue)
 - [ts.isError(value)](#tsiserrorvalue)
-- [ts.isFinite(value, [min], [max])](#tsisfinitevalue-min-max)
 - [ts.isFunction(value)](#tsisfunctionvalue)
-- [ts.isInteger(value, [min], [max])](#tsisintegervalue-min-max)
+- [ts.isInteger(value)](#tsisintegervalue)
 - [ts.isNaN(value)](#tsisnanvalue)
 - [ts.isNull(value)](#tsisnullvalue)
 - [ts.isNumber(value)](#tsisnumbervalue)
@@ -103,6 +103,14 @@ ts.isBoolean(true);  // returns true
 ts.isDate(new Date()); // returns true
 ```
 
+### ts.isDecimal(value)
+
+```javascript
+ts.isDecimal(Number.MIN_VALUE);     // returns true
+ts.isDecimal(-ts.MAX_SAFE_INTEGER); // returns true
+ts.isDecimal(+ts.MAX_SAFE_INTEGER); // returns true
+```
+
 ### ts.isError(value)
 
 ```javascript
@@ -115,21 +123,13 @@ ts.isError(new TypeError());      // returns true
 ts.isError(new URIError());       // returns true
 ```
 
-### ts.isFinite(value, [min], [max])
-
-```javascript
-ts.isFinite(Number.MIN_VALUE);     // returns true
-ts.isFinite(-ts.MAX_SAFE_INTEGER); // returns true
-ts.isFinite(+ts.MAX_SAFE_INTEGER); // returns true
-```
-
 ### ts.isFunction(value)
 
 ```javascript
 ts.isFunction(function () {}); // returns true
 ```
 
-### ts.isInteger(value, [min], [max])
+### ts.isInteger(value)
 
 ```javascript
 ts.isInteger(-ts.MAX_SAFE_INTEGER); // returns true
