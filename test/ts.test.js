@@ -129,7 +129,7 @@ describe('ts', function () {
                 Infinity,
                 NaN,
                 -ts.MAX_SAFE_INTEGER - 1,
-                +ts.MAX_SAFE_INTEGER + 1
+                ts.MAX_SAFE_INTEGER + 1
             ]).forEach(function (value) {
                 assert.strictEqual(predicate(value), false);
             });
@@ -138,7 +138,7 @@ describe('ts', function () {
         it('returns true', function () {
             assert.strictEqual(predicate(Number.MIN_VALUE), true);
             assert.strictEqual(predicate(-ts.MAX_SAFE_INTEGER), true);
-            assert.strictEqual(predicate(+ts.MAX_SAFE_INTEGER), true);
+            assert.strictEqual(predicate(ts.MAX_SAFE_INTEGER), true);
         });
     });
 
@@ -153,7 +153,7 @@ describe('ts', function () {
                 NaN,
                 Number.MIN_VALUE,
                 -ts.MAX_SAFE_INTEGER - 1,
-                +ts.MAX_SAFE_INTEGER + 1
+                ts.MAX_SAFE_INTEGER + 1
             ]).forEach(function (value) {
                 assert.strictEqual(predicate(value), false);
             });
@@ -161,7 +161,7 @@ describe('ts', function () {
 
         it('returns true', function () {
             assert.strictEqual(predicate(-ts.MAX_SAFE_INTEGER), true);
-            assert.strictEqual(predicate(+ts.MAX_SAFE_INTEGER), true);
+            assert.strictEqual(predicate(ts.MAX_SAFE_INTEGER), true);
         });
     });
 

@@ -10,7 +10,7 @@ var serialize = function (values) {
         var type = typeof value;
 
         switch (type) {
-            case 'number':
+            case 'number': {
                 if (value === Number.MIN_VALUE) {
                     return 'number:MIN_VALUE';
                 }
@@ -20,11 +20,14 @@ var serialize = function (values) {
                 }
 
                 return 'number:' + value;
+            }
             case 'boolean':
-            case 'string':
+            case 'string': {
                 return type + ':' + value;
-            default:
+            }
+            default: {
                 return Object.prototype.toString.call(value);
+            }
         }
     });
 };
