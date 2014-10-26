@@ -32,12 +32,6 @@
     "disallowSpaceBeforePostfixUnaryOperators": true,
     "requireSpaceBeforeBinaryOperators": true,
     "requireSpaceAfterBinaryOperators": true,
-    "disallowImplicitTypeConversion": [
-        "numeric",
-        "boolean",
-        "binary",
-        "string"
-    ],
     "requireCamelCaseOrUpperCaseIdentifiers": "ignoreProperties",
     "disallowKeywords": [
         "with"
