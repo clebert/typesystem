@@ -48,9 +48,9 @@
     "devDependencies": {
         "extended-assert": "~1.4.2",
         "grunt": "~0.4.5",
-        "grunt-contrib-jshint": "~0.10.0",
         "grunt-bumpup": "~0.6.2",
         "grunt-cli": "~0.1.13",
+        "grunt-contrib-jshint": "~0.10.0",
         "grunt-jscs": "~0.8.1",
         "grunt-mocha-cov": "~0.3.0",
         "grunt-module": "~1.2.0",
