@@ -2,193 +2,96 @@
 
 'use strict';
 
-var assert = require('extended-assert');
-var ts     = require('../lib/ts');
-var g      = require('./generator');
-
-var testPredicate = function (predicate, types) {
-    it('returns false', function () {
-        g.generateAllValuesExcept(types).forEach(function (value) {
-            assert.strictEqual(predicate(value), false);
-        });
-    });
-
-    it('returns true', function () {
-        g.generateAllValues(types).forEach(function (value) {
-            assert.strictEqual(predicate(value), true);
-        });
-    });
-};
+var assert = require('better-assert');
+var ts     = require('../lib/ts.js');
 
 describe('ts', function () {
-    describe('.MAX_SAFE_INTEGER', function () {
-        it('represents the maximum safe integer in JavaScript', function () {
-            assert.strictEqual(ts.MAX_SAFE_INTEGER, 9007199254740991);
+    describe('.getTypeOf()', function () {
+        it('returns "null"', function () {
+            assert(ts.getTypeOf(null) === 'null');
+        });
+
+        it('returns "undefined"', function () {
+            assert(ts.getTypeOf(undefined) === 'undefined');
+        });
+
+        it('returns "boolean"', function () {
+            assert(ts.getTypeOf(false) === 'boolean');
+            assert(ts.getTypeOf(true) === 'boolean');
+        });
+
+        it('returns "number"', function () {
+            assert(ts.getTypeOf(0) === 'number');
+            assert(ts.getTypeOf(Infinity) === 'number');
+            assert(ts.getTypeOf(NaN) === 'number');
+        });
+
+        it('returns "string"', function () {
+            assert(ts.getTypeOf('') === 'string');
+        });
+
+        it('returns "object"', function () {
+            assert(ts.getTypeOf([]) === 'object');
+            assert(ts.getTypeOf({}) === 'object');
+        });
+
+        it('returns "function"', function () {
+            assert(ts.getTypeOf(function () {}) === 'function');
         });
     });
 
-    describe('.checkArgument()', function () {
-        var truthy = function () {
-            return 1;
-        };
-
-        var falsy = function () {
-            return 0;
-        };
-
-        it('returns the given value', function () {
-            assert.strictEqual(ts.checkArgument('foo', truthy), 'foo');
-            assert.strictEqual(ts.checkArgument('foo', truthy, 'bar'), 'foo');
-
-            assert.strictEqual(ts.checkArgument(0, truthy), 0);
-            assert.strictEqual(ts.checkArgument(0, truthy, 123), 0);
-
-            assert.strictEqual(ts.checkArgument(null, truthy), null);
-            assert.strictEqual(ts.checkArgument(void 0, truthy), void 0);
-        });
-
-        it('returns the given default value', function () {
-            assert.strictEqual(ts.checkArgument(null, truthy, 'bar'), 'bar');
-            assert.strictEqual(ts.checkArgument(null, falsy, 'bar'), 'bar');
-
-            assert.strictEqual(ts.checkArgument(void 0, truthy, 'bar'), 'bar');
-            assert.strictEqual(ts.checkArgument(void 0, falsy, 'bar'), 'bar');
-        });
-
-        it('throws a type error', function () {
-            assert.throwsError(function () {
-                ts.checkArgument('foo', falsy);
-            }, 'TypeError', 'Illegal argument: "foo"');
-
-            assert.throwsError(function () {
-                ts.checkArgument('foo', falsy, 'bar');
-            }, 'TypeError', 'Illegal argument: "foo"');
-
-            assert.throwsError(function () {
-                ts.checkArgument(0, falsy);
-            }, 'TypeError', 'Illegal argument: 0');
-
-            assert.throwsError(function () {
-                ts.checkArgument(0, falsy, 'bar');
-            }, 'TypeError', 'Illegal argument: 0');
-
-            assert.throwsError(function () {
-                ts.checkArgument(null, falsy);
-            }, 'TypeError', 'Illegal argument: null');
-
-            assert.throwsError(function () {
-                ts.checkArgument(void 0, falsy);
-            }, 'TypeError', 'Illegal argument: undefined');
-        });
-
-        it('passes the given value to the given predicate', function () {
-            var called = 0;
-
-            var predicate = function (value) {
-                assert.strictEqual(value, 'foo');
-
-                called += 1;
-
-                return true;
-            };
-
-            ts.checkArgument('foo', predicate);
-
-            assert.strictEqual(called, 1);
-        });
-    });
-
-    [
-        'Arguments',
-        'Array',
-        'Boolean',
-        'Date',
-        'Error',
-        'Function',
-        'Null',
-        'Number',
-        'Object',
-        'RegExp',
-        'String',
-        'Undefined'
-    ].forEach(function (type) {
-        describe('.is' + type + '()', function () {
-            testPredicate(ts['is' + type], [
-                type
-            ]);
-        });
-    });
-
-    describe('.isDecimal()', function () {
-        var predicate = ts.isDecimal;
-
+    describe('.isFinite()', function () {
         it('returns false', function () {
-            g.generateAllValuesExcept([
-                'Number'
-            ]).concat([
-                Infinity,
-                NaN,
-                -ts.MAX_SAFE_INTEGER - 1,
-                ts.MAX_SAFE_INTEGER + 1
-            ]).forEach(function (value) {
-                assert.strictEqual(predicate(value), false);
-            });
+            assert(ts.isFinite(undefined) === false);
+            assert(ts.isFinite(-Infinity) === false);
+            assert(ts.isFinite(Infinity) === false);
+            assert(ts.isFinite(NaN) === false);
         });
 
         it('returns true', function () {
-            assert.strictEqual(predicate(Number.MIN_VALUE), true);
-            assert.strictEqual(predicate(-ts.MAX_SAFE_INTEGER), true);
-            assert.strictEqual(predicate(ts.MAX_SAFE_INTEGER), true);
+            assert(ts.isFinite(0) === true);
+            assert(ts.isFinite(-Number.MIN_VALUE) === true);
+            assert(ts.isFinite(Number.MIN_VALUE) === true);
+            assert(ts.isFinite(-Number.MAX_VALUE) === true);
+            assert(ts.isFinite(Number.MAX_VALUE) === true);
         });
     });
 
     describe('.isInteger()', function () {
-        var predicate = ts.isInteger;
-
         it('returns false', function () {
-            g.generateAllValuesExcept([
-                'Number'
-            ]).concat([
-                Infinity,
-                NaN,
-                Number.MIN_VALUE,
-                -ts.MAX_SAFE_INTEGER - 1,
-                ts.MAX_SAFE_INTEGER + 1
-            ]).forEach(function (value) {
-                assert.strictEqual(predicate(value), false);
-            });
+            assert(ts.isInteger(undefined) === false);
+            assert(ts.isInteger(-Number.MIN_VALUE) === false);
+            assert(ts.isInteger(Number.MIN_VALUE) === false);
+            assert(ts.isInteger(-Infinity) === false);
+            assert(ts.isInteger(Infinity) === false);
+            assert(ts.isInteger(NaN) === false);
         });
 
         it('returns true', function () {
-            assert.strictEqual(predicate(-ts.MAX_SAFE_INTEGER), true);
-            assert.strictEqual(predicate(ts.MAX_SAFE_INTEGER), true);
+            assert(ts.isInteger(0) === true);
+            assert(ts.isInteger(-Number.MAX_VALUE) === true);
+            assert(ts.isInteger(Number.MAX_VALUE) === true);
         });
     });
 
     describe('.isNaN()', function () {
-        var predicate = ts.isNaN;
-
         it('returns false', function () {
-            g.generateAllValuesExcept([
-                'Number'
-            ]).concat([
-                Infinity,
-                Number.MIN_VALUE,
-                Number.MAX_VALUE
-            ]).forEach(function (value) {
-                assert.strictEqual(predicate(value), false);
-            });
+            assert(ts.isNaN(undefined) === false);
         });
 
         it('returns true', function () {
-            assert.strictEqual(predicate(NaN), true);
+            assert(ts.isNaN(NaN) === true);
         });
     });
 
     describe('.isVoid()', function () {
-        testPredicate(ts.isVoid, [
-            'Null',
-            'Undefined'
-        ]);
+        it('returns false', function () {
+            assert(ts.isVoid(NaN) === false);
+        });
+
+        it('returns true', function () {
+            assert(ts.isVoid(null) === true);
+            assert(ts.isVoid(undefined) === true);
+        });
     });
 });
