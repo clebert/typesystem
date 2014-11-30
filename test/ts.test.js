@@ -108,6 +108,8 @@ describe('ts', function () {
 
     describe('.isGenerator()', function () {
         it('returns false', function () {
+            assert(ts.isGenerator('function *() {}') === false);
+            assert(ts.isGenerator({}) === false);
             assert(ts.isGenerator(function () {}) === false);
         });
 
