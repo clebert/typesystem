@@ -5,7 +5,8 @@
     "keywords": [
         "type",
         "checking",
-        "typeof"
+        "typeof",
+        "predicate"
     ],
     "author": {
         "name": "Clemens Akens",
