@@ -113,20 +113,20 @@ describe('ts', function () {
 
         it('returns true', function () {
             try {
-                assert(ts.isGenerator(eval('(function () { return function*() {}; }());')) === true);
-                assert(ts.isGenerator(eval('(function () { return function*foo() {}; }());')) === true);
+                assert(ts.isGenerator(eval('(function () { return function*() {}; }())')) === true);
+                assert(ts.isGenerator(eval('(function () { return function*foo() {}; }())')) === true);
 
-                assert(ts.isGenerator(eval('(function () { return function* () {}; }());')) === true);
-                assert(ts.isGenerator(eval('(function () { return function* foo() {}; }());')) === true);
+                assert(ts.isGenerator(eval('(function () { return function* () {}; }())')) === true);
+                assert(ts.isGenerator(eval('(function () { return function* foo() {}; }())')) === true);
 
-                assert(ts.isGenerator(eval('(function () { return function*  () {}; }());')) === true);
-                assert(ts.isGenerator(eval('(function () { return function*  foo() {}; }());')) === true);
+                assert(ts.isGenerator(eval('(function () { return function*  () {}; }())')) === true);
+                assert(ts.isGenerator(eval('(function () { return function*  foo() {}; }())')) === true);
 
-                assert(ts.isGenerator(eval('(function () { return function *() {}; }());')) === true);
-                assert(ts.isGenerator(eval('(function () { return function *foo() {}; }());')) === true);
+                assert(ts.isGenerator(eval('(function () { return function *() {}; }())')) === true);
+                assert(ts.isGenerator(eval('(function () { return function *foo() {}; }())')) === true);
 
-                assert(ts.isGenerator(eval('(function () { return function  *() {}; }());')) === true);
-                assert(ts.isGenerator(eval('(function () { return function  *foo() {}; }());')) === true);
+                assert(ts.isGenerator(eval('(function () { return function  *() {}; }())')) === true);
+                assert(ts.isGenerator(eval('(function () { return function  *foo() {}; }())')) === true);
             } catch (exception) {
                 if ((/^AssertionError/).test(exception)) {
                     throw exception;
