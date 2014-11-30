@@ -35,6 +35,7 @@ var ts = require('typesystem');
 - [ts.isInteger(value)](#tsisintegervalue)
 - [ts.isNaN(value)](#tsisnanvalue)
 - [ts.isVoid(value)](#tsisvoidvalue)
+- [ts.isGenerator(value)](#tsisgeneratorvalue)
 
 ### ts.getTypeOf(value)
 
@@ -44,6 +45,7 @@ ts.getTypeOf(undefined);      // returns 'undefined'
 ts.getTypeOf(false);          // returns 'boolean'
 ts.getTypeOf(0);              // returns 'number'
 ts.getTypeOf('');             // returns 'string'
+ts.getTypeOf(Symbol());       // returns 'symbol'
 ts.getTypeOf({});             // returns 'object'
 ts.getTypeOf(function () {}); // returns 'function'
 ```
@@ -72,6 +74,12 @@ ts.isNaN(NaN); // returns true
 ```javascript
 ts.isVoid(null);      // returns true
 ts.isVoid(undefined); // returns true
+```
+
+### ts.isGenerator(value)
+
+```javascript
+ts.isGenerator(function *() {}); // returns true
 ```
 
 ## Running Tests

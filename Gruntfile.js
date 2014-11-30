@@ -33,6 +33,7 @@ module.exports = function (grunt) {
             options: {
                 colors: true,
                 files: 'test/*.test.js',
+                harmony: true,
                 ui: 'bdd'
             },
             'test-spec': {

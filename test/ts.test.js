@@ -1,4 +1,5 @@
 /* global describe, it */
+/* jshint evil: true */
 
 'use strict';
 
@@ -28,6 +29,16 @@ describe('ts', function () {
 
         it('returns "string"', function () {
             assert(ts.getTypeOf('') === 'string');
+        });
+
+        it('returns "symbol"', function () {
+            try {
+                assert(ts.getTypeOf(eval('Symbol()')) === 'symbol');
+            } catch (exception) {
+                if ((/^AssertionError/).test(exception)) {
+                    throw exception;
+                }
+            }
         });
 
         it('returns "object"', function () {
@@ -92,6 +103,35 @@ describe('ts', function () {
         it('returns true', function () {
             assert(ts.isVoid(null) === true);
             assert(ts.isVoid(undefined) === true);
+        });
+    });
+
+    describe('.isGenerator()', function () {
+        it('returns false', function () {
+            assert(ts.isGenerator(function () {}) === false);
+        });
+
+        it('returns true', function () {
+            try {
+                assert(ts.isGenerator(eval('(function () { return function*() {}; }());')) === true);
+                assert(ts.isGenerator(eval('(function () { return function*foo() {}; }());')) === true);
+
+                assert(ts.isGenerator(eval('(function () { return function* () {}; }());')) === true);
+                assert(ts.isGenerator(eval('(function () { return function* foo() {}; }());')) === true);
+
+                assert(ts.isGenerator(eval('(function () { return function*  () {}; }());')) === true);
+                assert(ts.isGenerator(eval('(function () { return function*  foo() {}; }());')) === true);
+
+                assert(ts.isGenerator(eval('(function () { return function *() {}; }());')) === true);
+                assert(ts.isGenerator(eval('(function () { return function *foo() {}; }());')) === true);
+
+                assert(ts.isGenerator(eval('(function () { return function  *() {}; }());')) === true);
+                assert(ts.isGenerator(eval('(function () { return function  *foo() {}; }());')) === true);
+            } catch (exception) {
+                if ((/^AssertionError/).test(exception)) {
+                    throw exception;
+                }
+            }
         });
     });
 });
