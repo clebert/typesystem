@@ -570,4 +570,14 @@ describe('ts', function () {
             }
         });
     });
+
+    describe('.isNull', function () {
+        it('returns false', function () {
+            assert(ts.isNull({}) === false);
+        });
+
+        it('returns true', function () {
+            assert(ts.isNull(null) === true);
+        });
+    });
 });
