@@ -1,15 +1,18 @@
 /* global describe, it */
+/* jshint unused: false */
 
 'use strict';
 
-var assert = require('better-assert');
-var fs     = require('fs');
-var pkg    = require('../package.json');
-var path   = require('path');
+var assertion = require('expressive-assertion');
+var fs        = require('fs');
+var pkg       = require('../package.json');
+var path      = require('path');
 
 describe('package.json', function () {
     it('defines an existing primary entry point', function () {
-        assert(pkg.main === 'lib/ts.js');
-        assert(fs.existsSync(path.join(__dirname, '..', pkg.main)));
+        /* jshint evil: true */
+
+        eval(assertion('pkg.main === "lib/ts.js"'));
+        eval(assertion('fs.existsSync(path.join(__dirname, "..", pkg.main))'));
     });
 });

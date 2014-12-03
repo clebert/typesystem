@@ -46,7 +46,7 @@
         "test": "node_modules/.bin/grunt"
     },
     "devDependencies": {
-        "better-assert": "~1.0.2",
+        "expressive-assertion": "~0.1.0",
         "grunt": "~0.4.5",
         "grunt-bumpup": "~0.6.2",
         "grunt-cli": "~0.1.13",
