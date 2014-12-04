@@ -6,6 +6,50 @@
 var assertion = require('expressive-assertion');
 var ts        = require('../lib/ts.js');
 
+var functions = [
+    'function () {}',
+    'function *() {}',
+    'function *foo() {}',
+    'function*() {}',
+    'function*foo() {}',
+    'function* foo() {}'
+];
+
+var objects = [
+    'arguments',
+    '[]',
+    'new Boolean()',
+    'new Date()',
+    'new Error()',
+    'new EvalError()',
+    'new RangeError()',
+    'new ReferenceError()',
+    'new SyntaxError()',
+    'new TypeError()',
+    'new URIError()',
+    'new Number()',
+    '{}',
+    'new RegExp()',
+    'new String()'
+];
+
+var primitives = [
+    'null',
+    'undefined',
+    'false',
+    'true',
+    '0',
+    '-Number.MIN_VALUE',
+    'Number.MIN_VALUE',
+    '-Number.MAX_VALUE',
+    'Number.MAX_VALUE',
+    '-Infinity',
+    'Infinity',
+    'NaN',
+    '""',
+    'Symbol()'
+];
+
 var assert = function (name, expression, expected) {
     /* jshint evil: true */
 
@@ -19,43 +63,7 @@ var assert = function (name, expression, expected) {
 };
 
 var describePredicate = function (name, truthyExpressions) {
-    var falsyExpressions = [
-        'null',
-        'undefined',
-        'false',
-        'true',
-        '0',
-        '-Number.MIN_VALUE',
-        'Number.MIN_VALUE',
-        '-Number.MAX_VALUE',
-        'Number.MAX_VALUE',
-        '-Infinity',
-        'Infinity',
-        'NaN',
-        '""',
-        'Symbol()',
-        'arguments',
-        '[]',
-        'new Boolean()',
-        'new Date()',
-        'new Error()',
-        'new EvalError()',
-        'new RangeError()',
-        'new ReferenceError()',
-        'new SyntaxError()',
-        'new TypeError()',
-        'new URIError()',
-        'new Number()',
-        '{}',
-        'new RegExp()',
-        'new String()',
-        'function () {}',
-        'function *() {}',
-        'function *foo() {}',
-        'function*() {}',
-        'function*foo() {}',
-        'function* foo() {}'
-    ].filter(function (expression) {
+    var falsyExpressions = functions.concat(objects, primitives).filter(function (expression) {
         return truthyExpressions.every(function (truthyExpression) {
             return truthyExpression !== expression;
         });
@@ -77,6 +85,8 @@ var describePredicate = function (name, truthyExpressions) {
 };
 
 describe('ts', function () {
+    describePredicate('isPrimitive', primitives);
+
     describePredicate('isNull', [
         'null'
     ]);
@@ -132,23 +142,7 @@ describe('ts', function () {
         'Symbol()'
     ]);
 
-    describePredicate('isObject', [
-        'arguments',
-        '[]',
-        'new Boolean()',
-        'new Date()',
-        'new Error()',
-        'new EvalError()',
-        'new RangeError()',
-        'new ReferenceError()',
-        'new SyntaxError()',
-        'new TypeError()',
-        'new URIError()',
-        'new Number()',
-        '{}',
-        'new RegExp()',
-        'new String()'
-    ]);
+    describePredicate('isObject', objects);
 
     describePredicate('isArgumentsObject', [
         'arguments'
@@ -192,14 +186,7 @@ describe('ts', function () {
         'new String()'
     ]);
 
-    describePredicate('isFunction', [
-        'function () {}',
-        'function *() {}',
-        'function *foo() {}',
-        'function*() {}',
-        'function*foo() {}',
-        'function* foo() {}'
-    ]);
+    describePredicate('isFunction', functions);
 
     describePredicate('isGenerator', [
         'function *() {}',

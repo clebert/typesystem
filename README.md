@@ -30,6 +30,7 @@ var ts = require('typesystem');
 
 ### Overview
 
+- [ts.isPrimitive(value)](#tsisprimitivevalue)
 - [ts.isNull(value)](#tsisnullvalue)
 - [ts.isUndefined(value)](#tsisundefinedvalue)
 - [ts.isVoid(value)](#tsisvoidvalue)
@@ -52,6 +53,20 @@ var ts = require('typesystem');
 - [ts.isStringObject(value)](#tsisstringobjectvalue)
 - [ts.isFunction(value)](#tsisfunctionvalue)
 - [ts.isGenerator(value)](#tsisgeneratorvalue)
+
+### ts.isPrimitive(value)
+
+```javascript
+ts.isPrimitive(null);      // returns true
+ts.isPrimitive(undefined); // returns true
+ts.isPrimitive(false);     // returns true
+ts.isPrimitive(true);      // returns true
+ts.isPrimitive(0);         // returns true
+ts.isPrimitive(Infinity);  // returns true
+ts.isPrimitive(NaN);       // returns true
+ts.isPrimitive('');        // returns true
+ts.isPrimitive(Symbol());  // returns true
+```
 
 ### ts.isNull(value)
 
@@ -131,21 +146,15 @@ ts.isSymbol(Symbol()); // returns true
 ### ts.isObject(value)
 
 ```javascript
-ts.isObject(arguments);            // returns true
-ts.isObject([]);                   // returns true
-ts.isObject(new Boolean());        // returns true
-ts.isObject(new Date());           // returns true
-ts.isObject(new Error());          // returns true
-ts.isObject(new EvalError());      // returns true
-ts.isObject(new RangeError());     // returns true
-ts.isObject(new ReferenceError()); // returns true
-ts.isObject(new SyntaxError());    // returns true
-ts.isObject(new TypeError());      // returns true
-ts.isObject(new URIError());       // returns true
-ts.isObject(new Number());         // returns true
-ts.isObject({});                   // returns true
-ts.isObject(new RegExp());         // returns true
-ts.isObject(new String());         // returns true
+ts.isObject(arguments);     // returns true
+ts.isObject([]);            // returns true
+ts.isObject(new Boolean()); // returns true
+ts.isObject(new Date());    // returns true
+ts.isObject(new Error());   // returns true
+ts.isObject(new Number());  // returns true
+ts.isObject({});            // returns true
+ts.isObject(new RegExp());  // returns true
+ts.isObject(new String());  // returns true
 ```
 
 ### ts.isArgumentsObject(value)
