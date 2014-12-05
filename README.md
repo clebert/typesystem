@@ -53,6 +53,7 @@ var ts = require('typesystem');
 - [ts.isStringObject(value)](#tsisstringobjectvalue)
 - [ts.isFunction(value)](#tsisfunctionvalue)
 - [ts.isGenerator(value)](#tsisgeneratorvalue)
+- [ts.isPlainFunction(value)](#tsisplainfunctionvalue)
 
 ### ts.isPrimitive(value)
 
@@ -228,6 +229,12 @@ ts.isFunction(function *() {}); // returns true
 
 ```javascript
 ts.isGenerator(function *() {}); // returns true
+```
+
+### ts.isPlainFunction(value)
+
+```javascript
+ts.isPlainFunction(function () {}); // returns true
 ```
 
 ## Running Tests

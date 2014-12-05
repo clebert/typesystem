@@ -7,12 +7,8 @@ var assertion = require('expressive-assertion');
 var ts        = require('../lib/ts.js');
 
 var functionExpressions = [
-    'function () {}',
     'function *() {}',
-    'function *foo() {}',
-    'function*() {}',
-    'function*foo() {}',
-    'function* foo() {}'
+    'function () {}'
 ];
 
 var objectExpressions = [
@@ -191,10 +187,10 @@ describe('ts', function () {
     describePredicate('isFunction', functionExpressions);
 
     describePredicate('isGenerator', [
-        'function *() {}',
-        'function *foo() {}',
-        'function*() {}',
-        'function*foo() {}',
-        'function* foo() {}'
+        'function *() {}'
+    ]);
+
+    describePredicate('isPlainFunction', [
+        'function () {}'
     ]);
 });
