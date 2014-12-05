@@ -14,6 +14,12 @@
     "disallowSpacesInNamedFunctionExpression": {
         "beforeOpeningRoundBrace": true
     },
+    "requireSpacesInFunctionDeclaration": {
+        "beforeOpeningCurlyBrace": true
+    },
+    "disallowSpacesInFunctionDeclaration": {
+        "beforeOpeningRoundBrace": true
+    },
     "disallowSpacesInCallExpression": true,
     "disallowMultipleVarDecl": true,
     "requireBlocksOnNewline": true,
@@ -39,6 +45,9 @@
     "disallowMultipleLineStrings": true,
     "disallowMultipleLineBreaks": true,
     "disallowMixedSpacesAndTabs": true,
+    "disallowOperatorBeforeLineBreak": [
+        "."
+    ],
     "disallowTrailingWhitespace": true,
     "disallowTrailingComma": true,
     "disallowKeywordsOnNewLine": [
@@ -49,7 +58,6 @@
     "requireDotNotation": true,
     "disallowYodaConditions": true,
     "requireSpaceAfterLineComment": true,
-    "disallowFunctionDeclarations": true,
     "disallowNewlineBeforeBlockStatements": true,
     "validateLineBreaks": "LF",
     "validateQuoteMarks": {

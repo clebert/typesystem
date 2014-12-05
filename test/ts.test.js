@@ -1,5 +1,5 @@
+/* exported ts */
 /* global describe, it */
-/* jshint unused: false */
 
 'use strict';
 
@@ -49,8 +49,6 @@ var primitiveExpressions = [
 var expressions = functionExpressions.concat(objectExpressions, primitiveExpressions);
 
 var assert = function (name, expression, expected) {
-    /* jshint evil: true */
-
     try {
         eval(assertion('ts.' + name + '(' + expression + ') === ' + expected));
     } catch (exception) {
