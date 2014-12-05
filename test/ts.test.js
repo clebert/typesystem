@@ -6,7 +6,7 @@
 var assertion = require('expressive-assertion');
 var ts        = require('../lib/ts.js');
 
-var functions = [
+var functionExpressions = [
     'function () {}',
     'function *() {}',
     'function *foo() {}',
@@ -15,7 +15,7 @@ var functions = [
     'function* foo() {}'
 ];
 
-var objects = [
+var objectExpressions = [
     'arguments',
     '[]',
     'new Boolean()',
@@ -33,7 +33,7 @@ var objects = [
     'new String()'
 ];
 
-var primitives = [
+var primitiveExpressions = [
     'null',
     'undefined',
     'false',
@@ -50,6 +50,8 @@ var primitives = [
     'Symbol()'
 ];
 
+var expressions = functionExpressions.concat(objectExpressions, primitiveExpressions);
+
 var assert = function (name, expression, expected) {
     /* jshint evil: true */
 
@@ -63,7 +65,7 @@ var assert = function (name, expression, expected) {
 };
 
 var describePredicate = function (name, truthyExpressions) {
-    var falsyExpressions = functions.concat(objects, primitives).filter(function (expression) {
+    var falsyExpressions = expressions.filter(function (expression) {
         return truthyExpressions.every(function (truthyExpression) {
             return truthyExpression !== expression;
         });
@@ -85,7 +87,7 @@ var describePredicate = function (name, truthyExpressions) {
 };
 
 describe('ts', function () {
-    describePredicate('isPrimitive', primitives);
+    describePredicate('isPrimitive', primitiveExpressions);
 
     describePredicate('isNull', [
         'null'
@@ -142,7 +144,7 @@ describe('ts', function () {
         'Symbol()'
     ]);
 
-    describePredicate('isObject', objects);
+    describePredicate('isObject', objectExpressions);
 
     describePredicate('isArgumentsObject', [
         'arguments'
@@ -186,7 +188,7 @@ describe('ts', function () {
         'new String()'
     ]);
 
-    describePredicate('isFunction', functions);
+    describePredicate('isFunction', functionExpressions);
 
     describePredicate('isGenerator', [
         'function *() {}',
