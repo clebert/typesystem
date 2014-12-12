@@ -1,9 +1,15 @@
 'use strict';
 
-var time = require('time-grunt');
+var tasks = require('load-grunt-tasks');
+var time  = require('time-grunt');
+
+var isNodeJs10 = function () {
+    return /^v0\.10/.test(process.version);
+};
 
 module.exports = function (grunt) {
     time(grunt);
+    tasks(grunt);
 
     grunt.initConfig({
         bumpup: {
@@ -28,6 +34,11 @@ module.exports = function (grunt) {
                 '!node_modules/**/*.js',
                 '!node_modules/**/*.json'
             ]
+        },
+        karma: {
+            saucelabs: {
+                configFile: 'karma.conf.js'
+            }
         },
         mochacov: {
             options: {
@@ -84,12 +95,6 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-bumpup');
-    grunt.loadNpmTasks('grunt-jscs');
-    grunt.loadNpmTasks('grunt-mocha-cov');
-    grunt.loadNpmTasks('grunt-module');
-
     grunt.registerTask('test', [
         'mochacov:test-spec',
         'mochacov:test-html-cov',
@@ -113,7 +118,7 @@ module.exports = function (grunt) {
     grunt.registerTask('travis', [
         'build',
         'mochacov:travis-coveralls'
-    ]);
+    ].concat(isNodeJs10() ? 'karma:saucelabs' : []));
 
     grunt.registerTask('default', 'build');
 };
