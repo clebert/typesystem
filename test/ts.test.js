@@ -52,7 +52,7 @@ var assert = function (name, expression, expected) {
     try {
         eval(assertion('ts.' + name + '(' + expression + ') === ' + expected));
     } catch (exception) {
-        if ((/^Error/).test(exception)) {
+        if (/^Error/.test(exception)) {
             throw exception;
         }
     }
