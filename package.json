@@ -45,12 +45,6 @@
     "scripts": {
         "test": "node_modules/.bin/grunt"
     },
-    "testling": {
-        "files": "test/ts.test.js",
-        "browsers": [
-            "chrome/latest"
-        ]
-    },
     "devDependencies": {
         "expressive-assertion": "latest",
         "grunt": "latest",
