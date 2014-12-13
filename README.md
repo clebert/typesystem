@@ -49,6 +49,7 @@ var ts = require('typesystem');
 - [ts.isBooleanObject(value)](#tsisbooleanobjectvalue)
 - [ts.isDate(value)](#tsisdatevalue)
 - [ts.isError(value)](#tsiserrorvalue)
+- [ts.isGlobalObject(value)](#tsisglobalobjectvalue)
 - [ts.isNumberObject(value)](#tsisnumberobjectvalue)
 - [ts.isPlainObject(value)](#tsisplainobjectvalue)
 - [ts.isRegExp(value)](#tsisregexpvalue)
@@ -194,6 +195,13 @@ ts.isError(new ReferenceError()); // returns true
 ts.isError(new SyntaxError());    // returns true
 ts.isError(new TypeError());      // returns true
 ts.isError(new URIError());       // returns true
+```
+
+### ts.isGlobalObject(value)
+
+```javascript
+ts.isGlobalObject(global); // returns true
+ts.isGlobalObject(window); // returns true
 ```
 
 ### ts.isNumberObject(value)

@@ -23,6 +23,8 @@ var objectExpressions = [
     'new SyntaxError()',
     'new TypeError()',
     'new URIError()',
+    'global',
+    'window',
     'new Number()',
     '{}',
     'new RegExp()',
@@ -52,7 +54,7 @@ var assert = function (name, expression, expected) {
     try {
         eval(assertion('ts.' + name + '(' + expression + ') === ' + expected));
     } catch (exception) {
-        if (/^Error/.test(exception)) {
+        if (!/^(?:ReferenceError|SyntaxError)/.test(exception)) {
             throw exception;
         }
     }
@@ -164,6 +166,11 @@ describe('ts', function () {
         'new SyntaxError()',
         'new TypeError()',
         'new URIError()'
+    ]);
+
+    describePredicate('isGlobalObject', [
+        'global',
+        'window'
     ]);
 
     describePredicate('isNumberObject', [
