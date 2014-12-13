@@ -12,6 +12,8 @@
 [![dependencies](http://img.shields.io/david/clebert/typesystem.svg?style=flat)](https://david-dm.org/clebert/typesystem#info=dependencies&view=table)
 [![devDependencies](http://img.shields.io/david/dev/clebert/typesystem.svg?style=flat)](https://david-dm.org/clebert/typesystem#info=devDependencies&view=table)
 
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/clebert.svg)](https://saucelabs.com/u/clebert)
+
 ## Getting Started
 
 ### Installation
