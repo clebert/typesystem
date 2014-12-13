@@ -55,14 +55,12 @@
         "grunt-karma": "latest",
         "grunt-mocha-cov": "latest",
         "grunt-module": "latest",
+        "karma": "latest",
         "karma-browserify": "latest",
         "karma-mocha": "latest",
         "karma-sauce-launcher": "latest",
         "load-grunt-tasks": "latest",
         "mocha-cov-reporter": "latest",
         "time-grunt": "latest"
-    },
-    "peerDependencies": {
-        "karma": "latest"
     }
 }
