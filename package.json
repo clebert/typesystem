@@ -59,6 +59,7 @@
         "karma-browserify": "latest",
         "karma-mocha": "latest",
         "karma-sauce-launcher": "latest",
+        "karma-spec-reporter": "latest",
         "load-grunt-tasks": "latest",
         "mocha-cov-reporter": "latest",
         "time-grunt": "latest"
