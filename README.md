@@ -35,7 +35,7 @@ var ts = require('typesystem');
 - [ts.isPrimitive(value)](#tsisprimitivevalue)
 - [ts.isNull(value)](#tsisnullvalue)
 - [ts.isUndefined(value)](#tsisundefinedvalue)
-- [ts.isVoid(value)](#tsisvoidvalue)
+- [ts.isNullOrUndefined(value)](#tsisnullorundefinedvalue)
 - [ts.isBoolean(value)](#tsisbooleanvalue)
 - [ts.isNumber(value)](#tsisnumbervalue)
 - [ts.isFinite(value)](#tsisfinitevalue)
@@ -83,11 +83,11 @@ ts.isNull(null); // returns true
 ts.isUndefined(undefined); // returns true
 ```
 
-### ts.isVoid(value)
+### ts.isNullOrUndefined(value)
 
 ```javascript
-ts.isVoid(null);      // returns true
-ts.isVoid(undefined); // returns true
+ts.isNullOrUndefined(null);      // returns true
+ts.isNullOrUndefined(undefined); // returns true
 ```
 
 ### ts.isBoolean(value)

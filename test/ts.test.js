@@ -91,7 +91,7 @@ describe('ts', function () {
         'undefined'
     ]);
 
-    describePredicate('isVoid', [
+    describePredicate('isNullOrUndefined', [
         'null',
         'undefined'
     ]);
