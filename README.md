@@ -49,6 +49,13 @@ var ts = require('typesystem');
 - [ts.isBooleanObject(value)](#tsisbooleanobjectvalue)
 - [ts.isDate(value)](#tsisdatevalue)
 - [ts.isError(value)](#tsiserrorvalue)
+- [ts.isEvalError(value)](#tsisevalerrorvalue)
+- [ts.isPlainError(value)](#tsisplainerrorvalue)
+- [ts.isRangeError(value)](#tsisrangeerrorvalue)
+- [ts.isReferenceError(value)](#tsisreferenceerrorvalue)
+- [ts.isSyntaxError(value)](#tsissyntaxerrorvalue)
+- [ts.isTypeError(value)](#tsistypeerrorvalue)
+- [ts.isURIError(value)](#tsisurierrorvalue)
 - [ts.isGlobalObject(value)](#tsisglobalobjectvalue)
 - [ts.isNumberObject(value)](#tsisnumberobjectvalue)
 - [ts.isPlainObject(value)](#tsisplainobjectvalue)
@@ -197,6 +204,48 @@ ts.isError(new ReferenceError()); // returns true
 ts.isError(new SyntaxError());    // returns true
 ts.isError(new TypeError());      // returns true
 ts.isError(new URIError());       // returns true
+```
+
+### ts.isEvalError(value)
+
+```javascript
+ts.isEvalError(new EvalError()); // returns true
+```
+
+### ts.isPlainError(value)
+
+```javascript
+ts.isPlainError(new Error()); // returns true
+```
+
+### ts.isRangeError(value)
+
+```javascript
+ts.isRangeError(new RangeError()); // returns true
+```
+
+### ts.isReferenceError(value)
+
+```javascript
+ts.isReferenceError(new ReferenceError()); // returns true
+```
+
+### ts.isSyntaxError(value)
+
+```javascript
+ts.isSyntaxError(new SyntaxError()); // returns true
+```
+
+### ts.isTypeError(value)
+
+```javascript
+ts.isTypeError(new TypeError()); // returns true
+```
+
+### ts.isURIError(value)
+
+```javascript
+ts.isURIError(new URIError()); // returns true
 ```
 
 ### ts.isGlobalObject(value)

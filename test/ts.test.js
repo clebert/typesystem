@@ -168,6 +168,34 @@ describe('ts', function () {
         'new URIError()'
     ]);
 
+    describePredicate('isEvalError', [
+        'new EvalError()'
+    ]);
+
+    describePredicate('isPlainError', [
+        'new Error()'
+    ]);
+
+    describePredicate('isRangeError', [
+        'new RangeError()'
+    ]);
+
+    describePredicate('isReferenceError', [
+        'new ReferenceError()'
+    ]);
+
+    describePredicate('isSyntaxError', [
+        'new SyntaxError()'
+    ]);
+
+    describePredicate('isTypeError', [
+        'new TypeError()'
+    ]);
+
+    describePredicate('isURIError', [
+        'new URIError()'
+    ]);
+
     describePredicate('isGlobalObject', [
         'global',
         'window'
