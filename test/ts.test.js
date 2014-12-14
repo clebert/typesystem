@@ -26,6 +26,9 @@ var objectExpressions = [
     'new URIError()',
     'global',
     'window',
+    'document',
+    'document.createElement("div")',
+    'document.createElement("span")',
     'new Number()',
     '{}',
     'new RegExp()',
@@ -200,6 +203,15 @@ describe('ts', function () {
     describePredicate('isGlobalObject', [
         'global',
         'window'
+    ]);
+
+    describePredicate('isHTMLDocument', [
+        'document'
+    ]);
+
+    describePredicate('isHTMLElement', [
+        'document.createElement("div")',
+        'document.createElement("span")'
     ]);
 
     describePredicate('isNumberObject', [

@@ -57,6 +57,8 @@ var ts = require('typesystem');
 - [ts.isTypeError(value)](#tsistypeerrorvalue)
 - [ts.isURIError(value)](#tsisurierrorvalue)
 - [ts.isGlobalObject(value)](#tsisglobalobjectvalue)
+- [ts.isHTMLDocument(value)](#tsishtmldocumentvalue)
+- [ts.isHTMLElement(value)](#tsishtmlelementvalue)
 - [ts.isNumberObject(value)](#tsisnumberobjectvalue)
 - [ts.isPlainObject(value)](#tsisplainobjectvalue)
 - [ts.isRegExp(value)](#tsisregexpvalue)
@@ -253,6 +255,19 @@ ts.isURIError(new URIError()); // returns true
 ```javascript
 ts.isGlobalObject(global); // returns true
 ts.isGlobalObject(window); // returns true
+```
+
+### ts.isHTMLDocument(value)
+
+```javascript
+ts.isHTMLDocument(document); // returns true
+```
+
+### ts.isHTMLElement(value)
+
+```javascript
+ts.isHTMLElement(document.createElement("div"));  // returns true
+ts.isHTMLElement(document.createElement("span")); // returns true
 ```
 
 ### ts.isNumberObject(value)
