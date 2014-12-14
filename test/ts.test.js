@@ -8,6 +8,7 @@ var ts        = require('../lib/ts.js');
 
 var functionExpressions = [
     'function *() {}',
+    'function* () {}',
     'function () {}'
 ];
 
@@ -220,7 +221,8 @@ describe('ts', function () {
     describePredicate('isFunction', functionExpressions);
 
     describePredicate('isGenerator', [
-        'function *() {}'
+        'function *() {}',
+        'function* () {}'
     ]);
 
     describePredicate('isPlainFunction', [
