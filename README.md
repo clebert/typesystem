@@ -155,6 +155,8 @@ ts.isObject([]);            // returns true
 ts.isObject(new Boolean()); // returns true
 ts.isObject(new Date());    // returns true
 ts.isObject(new Error());   // returns true
+ts.isObject(global);        // returns true
+ts.isObject(window);        // returns true
 ts.isObject(new Number());  // returns true
 ts.isObject({});            // returns true
 ts.isObject(new RegExp());  // returns true
