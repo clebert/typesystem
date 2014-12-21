@@ -1,10 +1,10 @@
-/* exported ts */
+/* exported assert, ts */
 /* global describe, it */
 
 'use strict';
 
-var assertion = require('expressive-assertion');
-var ts        = require('../lib/ts.js');
+var assert = require('expressive-assertion');
+var ts     = require('../lib/ts.js');
 
 var functionExpressions = [
     'function *() {}',
@@ -54,9 +54,9 @@ var primitiveExpressions = [
 
 var expressions = functionExpressions.concat(objectExpressions, primitiveExpressions);
 
-var assert = function (name, expression, expected) {
+var evalAssert = function (name, expression, expected) {
     try {
-        eval(assertion('ts.' + name + '(' + expression + ') === ' + expected));
+        eval('assert(function () { return ts.' + name + '(' + expression + ') === ' + expected + ' })');
     } catch (exception) {
         if (!/^(?:ReferenceError|SyntaxError)/.test(exception)) {
             throw exception;
@@ -74,13 +74,13 @@ var describePredicate = function (name, truthyExpressions) {
     describe('.' + name + '()', function () {
         it('returns false', function () {
             falsyExpressions.forEach(function (falsyExpression) {
-                assert(name, falsyExpression, false);
+                evalAssert(name, falsyExpression, false);
             });
         });
 
         it('returns true', function () {
             truthyExpressions.forEach(function (truthyExpression) {
-                assert(name, truthyExpression, true);
+                evalAssert(name, truthyExpression, true);
             });
         });
     });
