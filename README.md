@@ -49,13 +49,6 @@ var ts = require('typesystem');
 - [ts.isBooleanObject(value)](#tsisbooleanobjectvalue)
 - [ts.isDate(value)](#tsisdatevalue)
 - [ts.isError(value)](#tsiserrorvalue)
-- [ts.isEvalError(value)](#tsisevalerrorvalue)
-- [ts.isPlainError(value)](#tsisplainerrorvalue)
-- [ts.isRangeError(value)](#tsisrangeerrorvalue)
-- [ts.isReferenceError(value)](#tsisreferenceerrorvalue)
-- [ts.isSyntaxError(value)](#tsissyntaxerrorvalue)
-- [ts.isTypeError(value)](#tsistypeerrorvalue)
-- [ts.isURIError(value)](#tsisurierrorvalue)
 - [ts.isGlobalObject(value)](#tsisglobalobjectvalue)
 - [ts.isHTMLDocument(value)](#tsishtmldocumentvalue)
 - [ts.isHTMLElement(value)](#tsishtmlelementvalue)
@@ -64,8 +57,6 @@ var ts = require('typesystem');
 - [ts.isRegExp(value)](#tsisregexpvalue)
 - [ts.isStringObject(value)](#tsisstringobjectvalue)
 - [ts.isFunction(value)](#tsisfunctionvalue)
-- [ts.isGenerator(value)](#tsisgeneratorvalue)
-- [ts.isPlainFunction(value)](#tsisplainfunctionvalue)
 
 ### ts.isPrimitive(value)
 
@@ -209,48 +200,6 @@ ts.isError(new TypeError());      // returns true
 ts.isError(new URIError());       // returns true
 ```
 
-### ts.isEvalError(value)
-
-```javascript
-ts.isEvalError(new EvalError()); // returns true
-```
-
-### ts.isPlainError(value)
-
-```javascript
-ts.isPlainError(new Error()); // returns true
-```
-
-### ts.isRangeError(value)
-
-```javascript
-ts.isRangeError(new RangeError()); // returns true
-```
-
-### ts.isReferenceError(value)
-
-```javascript
-ts.isReferenceError(new ReferenceError()); // returns true
-```
-
-### ts.isSyntaxError(value)
-
-```javascript
-ts.isSyntaxError(new SyntaxError()); // returns true
-```
-
-### ts.isTypeError(value)
-
-```javascript
-ts.isTypeError(new TypeError()); // returns true
-```
-
-### ts.isURIError(value)
-
-```javascript
-ts.isURIError(new URIError()); // returns true
-```
-
 ### ts.isGlobalObject(value)
 
 ```javascript
@@ -300,18 +249,6 @@ ts.isStringObject(new String()); // returns true
 ```javascript
 ts.isFunction(function *() {}); // returns true
 ts.isFunction(function () {});  // returns true
-```
-
-### ts.isGenerator(value)
-
-```javascript
-ts.isGenerator(function *() {}); // returns true
-```
-
-### ts.isPlainFunction(value)
-
-```javascript
-ts.isPlainFunction(function () {}); // returns true
 ```
 
 ## Running Tests
