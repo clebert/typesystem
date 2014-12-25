@@ -7,8 +7,8 @@ var assert = require('expressive-assertion');
 var ts     = require('../lib/ts.js');
 
 var functionExpressions = [
-    'function *() {}',
-    'function () {}'
+    'function () {}',
+    'function *() {}'
 ];
 
 var objectExpressions = [

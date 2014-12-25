@@ -247,8 +247,8 @@ ts.isStringObject(new String()); // returns true
 ### ts.isFunction(value)
 
 ```javascript
-ts.isFunction(function *() {}); // returns true
-ts.isFunction(function () {});  // returns true
+ts.isFunction(function () {}); // returns true
+ts.isFunction(function *() {});  // returns true
 ```
 
 ## Running Tests
