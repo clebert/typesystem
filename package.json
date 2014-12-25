@@ -1,6 +1,6 @@
 {
     "name": "typesystem",
-    "version": "3.6.1",
+    "version": "3.7.0",
     "description": "Better type checking for JavaScript.",
     "keywords": [
         "type",
