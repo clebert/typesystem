@@ -4,8 +4,8 @@
 
 var assert = require('expressive-assertion');
 var fs     = require('fs');
-var pkg    = require('../package.json');
 var path   = require('path');
+var pkg    = require('../package.json');
 
 describe('package.json', function () {
     it('defines an existing primary entry point', function () {
