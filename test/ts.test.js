@@ -16,6 +16,9 @@ var objectExpressions = [
     '[]',
     'new Boolean()',
     'new Date()',
+    'document',
+    'document.createElement("div")',
+    'document.createElement("span")',
     'new Error()',
     'new EvalError()',
     'new RangeError()',
@@ -25,9 +28,6 @@ var objectExpressions = [
     'new URIError()',
     'global',
     'window',
-    'document',
-    'document.createElement("div")',
-    'document.createElement("span")',
     'new Number()',
     '{}',
     'new RegExp()',
@@ -38,7 +38,6 @@ var primitiveExpressions = [
     'false',
     'true',
     'null',
-    'undefined',
     '0',
     '-Number.MIN_VALUE',
     'Number.MIN_VALUE',
@@ -48,7 +47,8 @@ var primitiveExpressions = [
     'Infinity',
     'NaN',
     '""',
-    'Symbol()'
+    'Symbol()',
+    'undefined'
 ];
 
 var expressions = functionExpressions.concat(objectExpressions, primitiveExpressions);
@@ -108,6 +108,15 @@ describe('ts', function () {
         'new Date()'
     ]);
 
+    describePredicate('isDocumentObject', [
+        'document'
+    ]);
+
+    describePredicate('isElementObject', [
+        'document.createElement("div")',
+        'document.createElement("span")'
+    ]);
+
     describePredicate('isErrorObject', [
         'new Error()',
         'new EvalError()',
@@ -121,15 +130,6 @@ describe('ts', function () {
     describePredicate('isGlobalObject', [
         'global',
         'window'
-    ]);
-
-    describePredicate('isDocumentObject', [
-        'document'
-    ]);
-
-    describePredicate('isElementObject', [
-        'document.createElement("div")',
-        'document.createElement("span")'
     ]);
 
     describePredicate('isNumberObject', [
@@ -164,10 +164,6 @@ describe('ts', function () {
         'undefined'
     ]);
 
-    describePredicate('isUndefined', [
-        'undefined'
-    ]);
-
     describePredicate('isNumber', [
         '0',
         '-Number.MIN_VALUE',
@@ -199,5 +195,9 @@ describe('ts', function () {
 
     describePredicate('isSymbol', [
         'Symbol()'
+    ]);
+
+    describePredicate('isUndefined', [
+        'undefined'
     ]);
 });
