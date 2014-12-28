@@ -6,11 +6,6 @@
 var assert = require('expressive-assertion');
 var ts     = require('../lib/ts.js');
 
-var functionExpressions = [
-    'function () {}',
-    'function *() {}'
-];
-
 var objectExpressions = [
     'arguments',
     '[]',
@@ -26,6 +21,8 @@ var objectExpressions = [
     'new SyntaxError()',
     'new TypeError()',
     'new URIError()',
+    'function () {}',
+    'function *() {}',
     'global',
     'window',
     'new Number()',
@@ -51,7 +48,7 @@ var primitiveExpressions = [
     'undefined'
 ];
 
-var expressions = functionExpressions.concat(objectExpressions, primitiveExpressions);
+var expressions = objectExpressions.concat(primitiveExpressions);
 
 var evalAssert = function (name, expression, expected) {
     /* jshint evil: true */
@@ -88,8 +85,6 @@ var describePredicate = function (name, truthyExpressions) {
 };
 
 describe('ts', function () {
-    describePredicate('isFunction', functionExpressions);
-
     describePredicate('isObject', objectExpressions);
 
     describePredicate('isArgumentsObject', [
@@ -125,6 +120,11 @@ describe('ts', function () {
         'new SyntaxError()',
         'new TypeError()',
         'new URIError()'
+    ]);
+
+    describePredicate('isFunctionObject', [
+        'function () {}',
+        'function *() {}'
     ]);
 
     describePredicate('isGlobalObject', [

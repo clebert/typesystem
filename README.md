@@ -32,7 +32,6 @@ var ts = require('typesystem');
 
 ### Overview
 
-- [ts.isFunction(value)](#tsisfunctionvalue)
 - [ts.isObject(value)](#tsisobjectvalue)
 - [ts.isArgumentsObject(value)](#tsisargumentsobjectvalue)
 - [ts.isArrayObject(value)](#tsisarrayobjectvalue)
@@ -41,6 +40,7 @@ var ts = require('typesystem');
 - [ts.isDocumentObject(value)](#tsisdocumentobjectvalue)
 - [ts.isElementObject(value)](#tsiselementobjectvalue)
 - [ts.isErrorObject(value)](#tsiserrorobjectvalue)
+- [ts.isFunctionObject(value)](#tsisfunctionobjectvalue)
 - [ts.isGlobalObject(value)](#tsisglobalobjectvalue)
 - [ts.isNumberObject(value)](#tsisnumberobjectvalue)
 - [ts.isPlainObject(value)](#tsisplainobjectvalue)
@@ -56,13 +56,6 @@ var ts = require('typesystem');
 - [ts.isString(value)](#tsisstringvalue)
 - [ts.isSymbol(value)](#tsissymbolvalue)
 - [ts.isUndefined(value)](#tsisundefinedvalue)
-
-### ts.isFunction(value)
-
-```javascript
-ts.isFunction(function () {});  // returns true
-ts.isFunction(function *() {}); // returns true
-```
 
 ### ts.isObject(value)
 
@@ -81,6 +74,8 @@ ts.isObject(new ReferenceError());           // returns true
 ts.isObject(new SyntaxError());              // returns true
 ts.isObject(new TypeError());                // returns true
 ts.isObject(new URIError());                 // returns true
+ts.isObject(function () {});                 // returns true
+ts.isObject(function *() {});                // returns true
 ts.isObject(global);                         // returns true
 ts.isObject(window);                         // returns true
 ts.isObject(new Number());                   // returns true
@@ -136,6 +131,13 @@ ts.isErrorObject(new ReferenceError()); // returns true
 ts.isErrorObject(new SyntaxError());    // returns true
 ts.isErrorObject(new TypeError());      // returns true
 ts.isErrorObject(new URIError());       // returns true
+```
+
+### ts.isFunctionObject(value)
+
+```javascript
+ts.isFunctionObject(function () {});  // returns true
+ts.isFunctionObject(function *() {}); // returns true
 ```
 
 ### ts.isGlobalObject(value)
