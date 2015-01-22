@@ -1,19 +1,27 @@
 'use strict';
 
-var tasks = require('load-grunt-tasks');
-var time  = require('time-grunt');
-
-var isNodeJs10 = function () {
-    return /^v0\.10/.test(process.version);
-};
+var blanket = require('blanket');
+var tasks   = require('load-grunt-tasks');
+var time    = require('time-grunt');
 
 module.exports = function (grunt) {
     time(grunt);
     tasks(grunt);
 
+    blanket({
+        'data-cover-only': 'lib/',
+        'data-cover-never': 'node_modules/'
+    });
+
     grunt.initConfig({
         bumpup: {
+            options: {
+                newlineEof: true
+            },
             file: 'package.json'
+        },
+        coveralls: {
+            src: 'test/lcov.info'
         },
         jscs: {
             options: {
@@ -40,51 +48,46 @@ module.exports = function (grunt) {
                 configFile: 'karma.conf.js'
             }
         },
-        mochacov: {
+        mochaTest: {
             options: {
                 colors: true,
-                files: 'test/*.test.js',
-                harmony: true,
                 ui: 'bdd'
             },
-            'test-spec': {
+            spec: {
                 options: {
                     reporter: 'spec'
-                }
+                },
+                src: 'test/*.test.js'
             },
-            'test-html-cov': {
+            'html-cov': {
                 options: {
-                    output: 'test/coverage.html',
+                    captureFile: 'test/coverage.html',
                     quiet: true,
                     reporter: 'html-cov'
-                }
+                },
+                src: 'test/*.test.js'
             },
-            'test-console-cov': {
+            'console-cov': {
                 options: {
-                    coverage: true,
                     reporter: 'mocha-cov-reporter'
-                }
+                },
+                src: 'test/*.test.js'
             },
-            'travis-coveralls': {
+            'lcov-cov': {
                 options: {
-                    coveralls: {
-                        serviceName: 'travis-ci'
-                    }
-                }
+                    captureFile: 'test/lcov.info',
+                    quiet: true,
+                    reporter: 'mocha-lcov-reporter'
+                },
+                src: 'test/*.test.js'
             }
         },
         module: {
             'check-repository': {
                 options: {
+                    branch: 'master',
                     check: true
                 }
-            },
-            'license-copyright': {
-                options: {
-                    replace: true,
-                    line: 3
-                },
-                src: 'LICENSE'
             },
             'release-publish': {
                 options: {
@@ -96,29 +99,25 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('test', [
-        'mochacov:test-spec',
-        'mochacov:test-html-cov',
-        'mochacov:test-console-cov'
-    ]);
-
-    grunt.registerTask('build', [
         'jscs',
         'jshint',
-        'test'
+        'mochaTest:spec',
+        'mochaTest:html-cov',
+        'mochaTest:console-cov',
+        'mochaTest:lcov-cov'
     ]);
 
     grunt.registerTask('publish', function (type) {
-        grunt.task.run('build');
+        grunt.task.run('test');
         grunt.task.run('module:check-repository');
         grunt.task.run('bumpup:' + type);
-        grunt.task.run('module:license-copyright');
         grunt.task.run('module:release-publish');
     });
 
     grunt.registerTask('travis', [
-        'build',
-        'mochacov:travis-coveralls'
-    ].concat(isNodeJs10() ? 'karma:saucelabs' : []));
+        'test',
+        'coveralls'
+    ].concat(process.version.match('v0.10') ? 'karma:saucelabs' : []));
 
-    grunt.registerTask('default', 'build');
+    grunt.registerTask('default', 'test');
 };

@@ -32,68 +32,49 @@ var ts = require('typesystem');
 
 ### Overview
 
-- [ts.isObject(value)](#tsisobjectvalue)
-- [ts.isArgumentsObject(value)](#tsisargumentsobjectvalue)
-- [ts.isArrayObject(value)](#tsisarrayobjectvalue)
-- [ts.isBooleanObject(value)](#tsisbooleanobjectvalue)
-- [ts.isDateObject(value)](#tsisdateobjectvalue)
-- [ts.isDocumentObject(value)](#tsisdocumentobjectvalue)
-- [ts.isElementObject(value)](#tsiselementobjectvalue)
-- [ts.isErrorObject(value)](#tsiserrorobjectvalue)
-- [ts.isFunctionObject(value)](#tsisfunctionobjectvalue)
-- [ts.isGlobalObject(value)](#tsisglobalobjectvalue)
-- [ts.isNumberObject(value)](#tsisnumberobjectvalue)
-- [ts.isPlainObject(value)](#tsisplainobjectvalue)
-- [ts.isRegExpObject(value)](#tsisregexpobjectvalue)
-- [ts.isStringObject(value)](#tsisstringobjectvalue)
-- [ts.isPrimitive(value)](#tsisprimitivevalue)
+- [ts.isArguments(value)](#tsisargumentsvalue)
+- [ts.isArray(value)](#tsisarrayvalue)
 - [ts.isBoolean(value)](#tsisbooleanvalue)
+- [ts.isBooleanObject(value)](#tsisbooleanobjectvalue)
+- [ts.isDate(value)](#tsisdatevalue)
+- [ts.isDocument(value)](#tsisdocumentvalue)
+- [ts.isElement(value)](#tsiselementvalue)
+- [ts.isError(value)](#tsiserrorvalue)
+- [ts.isFloat(value)](#tsisfloatvalue)
+- [ts.isFunction(value)](#tsisfunctionvalue)
+- [ts.isGlobal(value)](#tsisglobalvalue)
+- [ts.isInteger(value)](#tsisintegervalue)
 - [ts.isNull(value)](#tsisnullvalue)
 - [ts.isNullOrUndefined(value)](#tsisnullorundefinedvalue)
 - [ts.isNumber(value)](#tsisnumbervalue)
-- [ts.isFiniteNumber(value)](#tsisfinitenumbervalue)
-- [ts.isIntegerNumber(value)](#tsisintegernumbervalue)
+- [ts.isNumberObject(value)](#tsisnumberobjectvalue)
+- [ts.isObject(value)](#tsisobjectvalue)
+- [ts.isPrimitive(value)](#tsisprimitivevalue)
+- [ts.isReference(value)](#tsisreferencevalue)
+- [ts.isRegExp(value)](#tsisregexpvalue)
 - [ts.isString(value)](#tsisstringvalue)
+- [ts.isStringObject(value)](#tsisstringobjectvalue)
 - [ts.isSymbol(value)](#tsissymbolvalue)
 - [ts.isUndefined(value)](#tsisundefinedvalue)
 
-### ts.isObject(value)
+### ts.isArguments(value)
 
 ```javascript
-ts.isObject(arguments);                      // returns true
-ts.isObject([]);                             // returns true
-ts.isObject(new Boolean());                  // returns true
-ts.isObject(new Date());                     // returns true
-ts.isObject(document);                       // returns true
-ts.isObject(document.createElement('div'));  // returns true
-ts.isObject(document.createElement('span')); // returns true
-ts.isObject(new Error());                    // returns true
-ts.isObject(new EvalError());                // returns true
-ts.isObject(new RangeError());               // returns true
-ts.isObject(new ReferenceError());           // returns true
-ts.isObject(new SyntaxError());              // returns true
-ts.isObject(new TypeError());                // returns true
-ts.isObject(new URIError());                 // returns true
-ts.isObject(function () {});                 // returns true
-ts.isObject(function *() {});                // returns true
-ts.isObject(global);                         // returns true
-ts.isObject(window);                         // returns true
-ts.isObject(new Number());                   // returns true
-ts.isObject({});                             // returns true
-ts.isObject(new RegExp());                   // returns true
-ts.isObject(new String());                   // returns true
+ts.isArguments(arguments); // returns true
 ```
 
-### ts.isArgumentsObject(value)
+### ts.isArray(value)
 
 ```javascript
-ts.isArgumentsObject(arguments); // returns true
+ts.isArray([]);          // returns true
+ts.isArray(new Array()); // returns true
 ```
 
-### ts.isArrayObject(value)
+### ts.isBoolean(value)
 
 ```javascript
-ts.isArrayObject([]); // returns true
+ts.isBoolean(true);  // returns true
+ts.isBoolean(false); // returns true
 ```
 
 ### ts.isBooleanObject(value)
@@ -102,99 +83,73 @@ ts.isArrayObject([]); // returns true
 ts.isBooleanObject(new Boolean()); // returns true
 ```
 
-### ts.isDateObject(value)
+### ts.isDate(value)
 
 ```javascript
-ts.isDateObject(new Date()); // returns true
+ts.isDate(new Date()); // returns true
 ```
 
-### ts.isDocumentObject(value)
+### ts.isDocument(value)
 
 ```javascript
-ts.isDocumentObject(document); // returns true
+ts.isDocument(document); // returns true
 ```
 
-### ts.isElementObject(value)
+### ts.isElement(value)
 
 ```javascript
-ts.isElementObject(document.createElement('div'));  // returns true
-ts.isElementObject(document.createElement('span')); // returns true
+ts.isElement(document.createElement('div'));  // returns true
+ts.isElement(document.createElement('span')); // returns true
 ```
 
-### ts.isErrorObject(value)
+### ts.isError(value)
 
 ```javascript
-ts.isErrorObject(new Error());          // returns true
-ts.isErrorObject(new EvalError());      // returns true
-ts.isErrorObject(new RangeError());     // returns true
-ts.isErrorObject(new ReferenceError()); // returns true
-ts.isErrorObject(new SyntaxError());    // returns true
-ts.isErrorObject(new TypeError());      // returns true
-ts.isErrorObject(new URIError());       // returns true
+ts.isError(new Error());          // returns true
+ts.isError(new EvalError());      // returns true
+ts.isError(new RangeError());     // returns true
+ts.isError(new ReferenceError()); // returns true
+ts.isError(new SyntaxError());    // returns true
+ts.isError(new TypeError());      // returns true
+ts.isError(new URIError());       // returns true
 ```
 
-### ts.isFunctionObject(value)
+### ts.isFloat(value)
 
 ```javascript
-ts.isFunctionObject(function () {});  // returns true
-ts.isFunctionObject(function *() {}); // returns true
+ts.isFloat(1);                 // returns true
+ts.isFloat(-1);                // returns true
+ts.isFloat(0);                 // returns true
+ts.isFloat(-0);                // returns true
+ts.isFloat(Number.MAX_VALUE);  // returns true
+ts.isFloat(-Number.MAX_VALUE); // returns true
+ts.isFloat(Number.MIN_VALUE);  // returns true
+ts.isFloat(-Number.MIN_VALUE); // returns true
 ```
 
-### ts.isGlobalObject(value)
+### ts.isFunction(value)
 
 ```javascript
-ts.isGlobalObject(global); // returns true
-ts.isGlobalObject(window); // returns true
+ts.isFunction(function () {}); // returns true
+ts.isFunction(new Function()); // returns true
 ```
 
-### ts.isNumberObject(value)
+### ts.isGlobal(value)
 
 ```javascript
-ts.isNumberObject(new Number()); // returns true
+ts.isGlobal(global); // returns true
+ts.isGlobal(window); // returns true
 ```
 
-### ts.isPlainObject(value)
+### ts.isInteger(value)
 
 ```javascript
-ts.isPlainObject({}); // returns true
-```
-
-### ts.isRegExpObject(value)
-
-```javascript
-ts.isRegExpObject(new RegExp()); // returns true
-```
-
-### ts.isStringObject(value)
-
-```javascript
-ts.isStringObject(new String()); // returns true
-```
-
-### ts.isPrimitive(value)
-
-```javascript
-ts.isPrimitive(false);             // returns true
-ts.isPrimitive(true);              // returns true
-ts.isPrimitive(null);              // returns true
-ts.isPrimitive(0);                 // returns true
-ts.isPrimitive(-Number.MIN_VALUE); // returns true
-ts.isPrimitive(Number.MIN_VALUE);  // returns true
-ts.isPrimitive(-Number.MAX_VALUE); // returns true
-ts.isPrimitive(Number.MAX_VALUE);  // returns true
-ts.isPrimitive(-Infinity);         // returns true
-ts.isPrimitive(Infinity);          // returns true
-ts.isPrimitive(NaN);               // returns true
-ts.isPrimitive('');                // returns true
-ts.isPrimitive(Symbol());          // returns true
-ts.isPrimitive(undefined);         // returns true
-```
-
-### ts.isBoolean(value)
-
-```javascript
-ts.isBoolean(false); // returns true
-ts.isBoolean(true);  // returns true
+ts.isInteger(1);                 // returns true
+ts.isInteger(-1);                // returns true
+ts.isInteger(0);                 // returns true
+ts.isInteger(-0);                // returns true
+ts.isInteger(Number.MAX_VALUE);  // returns true
+ts.isInteger(-Number.MAX_VALUE); // returns true
 ```
 
 ### ts.isNull(value)
@@ -208,43 +163,85 @@ ts.isNull(null); // returns true
 ```javascript
 ts.isNullOrUndefined(null);      // returns true
 ts.isNullOrUndefined(undefined); // returns true
+ts.isNullOrUndefined(void 0);    // returns true
 ```
 
 ### ts.isNumber(value)
 
 ```javascript
+ts.isNumber(1);                 // returns true
+ts.isNumber(-1);                // returns true
 ts.isNumber(0);                 // returns true
-ts.isNumber(-Number.MIN_VALUE); // returns true
-ts.isNumber(Number.MIN_VALUE);  // returns true
-ts.isNumber(-Number.MAX_VALUE); // returns true
+ts.isNumber(-0);                // returns true
 ts.isNumber(Number.MAX_VALUE);  // returns true
-ts.isNumber(-Infinity);         // returns true
+ts.isNumber(-Number.MAX_VALUE); // returns true
+ts.isNumber(Number.MIN_VALUE);  // returns true
+ts.isNumber(-Number.MIN_VALUE); // returns true
 ts.isNumber(Infinity);          // returns true
+ts.isNumber(-Infinity);         // returns true
 ts.isNumber(NaN);               // returns true
 ```
 
-### ts.isFiniteNumber(value)
+### ts.isNumberObject(value)
 
 ```javascript
-ts.isFiniteNumber(0);                 // returns true
-ts.isFiniteNumber(-Number.MIN_VALUE); // returns true
-ts.isFiniteNumber(Number.MIN_VALUE);  // returns true
-ts.isFiniteNumber(-Number.MAX_VALUE); // returns true
-ts.isFiniteNumber(Number.MAX_VALUE);  // returns true
+ts.isNumberObject(new Number()); // returns true
 ```
 
-### ts.isIntegerNumber(value)
+### ts.isObject(value)
 
 ```javascript
-ts.isIntegerNumber(0);                 // returns true
-ts.isIntegerNumber(-Number.MAX_VALUE); // returns true
-ts.isIntegerNumber(Number.MAX_VALUE);  // returns true
+ts.isObject({});           // returns true
+ts.isObject(new Object()); // returns true
+```
+
+### ts.isPrimitive(value)
+
+```javascript
+ts.isPrimitive(true);      // returns true
+ts.isPrimitive(null);      // returns true
+ts.isPrimitive(1);         // returns true
+ts.isPrimitive('foo');     // returns true
+ts.isPrimitive(Symbol());  // returns true
+ts.isPrimitive(undefined); // returns true
+```
+
+### ts.isReference(value)
+
+```javascript
+ts.isReference(arguments);                     // returns true
+ts.isReference([]);                            // returns true
+ts.isReference(new Boolean());                 // returns true
+ts.isReference(new Date());                    // returns true
+ts.isReference(document);                      // returns true
+ts.isReference(document.createElement('div')); // returns true
+ts.isReference(new Error());                   // returns true
+ts.isReference(function () {});                // returns true
+ts.isReference(global);                        // returns true
+ts.isReference(new Number());                  // returns true
+ts.isReference({});                            // returns true
+ts.isReference(/(?:)/);                        // returns true
+ts.isReference(new String());                  // returns true
+```
+
+### ts.isRegExp(value)
+
+```javascript
+ts.isRegExp(/(?:)/);       // returns true
+ts.isRegExp(new RegExp()); // returns true
 ```
 
 ### ts.isString(value)
 
 ```javascript
-ts.isString(''); // returns true
+ts.isString('foo'); // returns true
+ts.isString('');    // returns true
+```
+
+### ts.isStringObject(value)
+
+```javascript
+ts.isStringObject(new String()); // returns true
 ```
 
 ### ts.isSymbol(value)
@@ -257,6 +254,7 @@ ts.isSymbol(Symbol()); // returns true
 
 ```javascript
 ts.isUndefined(undefined); // returns true
+ts.isUndefined(void 0);    // returns true
 ```
 
 ## Running Tests

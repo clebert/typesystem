@@ -6,9 +6,32 @@
 var assert = require('expressive-assertion');
 var ts     = require('../lib/ts.js');
 
-var objectExpressions = [
+var primitiveExpressions = [
+    'true',
+    'false',
+    'null',
+    '1',
+    '-1',
+    '0',
+    '-0',
+    'Number.MAX_VALUE',
+    '-Number.MAX_VALUE',
+    'Number.MIN_VALUE',
+    '-Number.MIN_VALUE',
+    'Infinity',
+    '-Infinity',
+    'NaN',
+    '"foo"',
+    '""',
+    'Symbol()',
+    'undefined',
+    'void 0'
+];
+
+var referenceExpressions = [
     'arguments',
     '[]',
+    'new Array()',
     'new Boolean()',
     'new Date()',
     'document',
@@ -22,39 +45,24 @@ var objectExpressions = [
     'new TypeError()',
     'new URIError()',
     'function () {}',
-    'function *() {}',
+    'new Function()',
     'global',
     'window',
     'new Number()',
     '{}',
+    'new Object()',
+    '/(?:)/',
     'new RegExp()',
     'new String()'
 ];
 
-var primitiveExpressions = [
-    'false',
-    'true',
-    'null',
-    '0',
-    '-Number.MIN_VALUE',
-    'Number.MIN_VALUE',
-    '-Number.MAX_VALUE',
-    'Number.MAX_VALUE',
-    '-Infinity',
-    'Infinity',
-    'NaN',
-    '""',
-    'Symbol()',
-    'undefined'
-];
+var allExpressions = primitiveExpressions.concat(referenceExpressions);
 
-var expressions = objectExpressions.concat(primitiveExpressions);
-
-var evalAssert = function (name, expression, expected) {
+var evalAssert = function (name, expression, result) {
     /* jshint evil: true */
 
     try {
-        eval('assert(function () { return ts.' + name + '(' + expression + ') === ' + expected + ' })');
+        eval('assert(function () { return ts.' + name + '(' + expression + ') === ' + result + ' })');
     } catch (exception) {
         if (!/^(?:ReferenceError|SyntaxError)/.test(exception)) {
             throw exception;
@@ -62,57 +70,63 @@ var evalAssert = function (name, expression, expected) {
     }
 };
 
-var describePredicate = function (name, truthyExpressions) {
-    var falsyExpressions = expressions.filter(function (expression) {
-        return truthyExpressions.every(function (truthyExpression) {
-            return truthyExpression !== expression;
+var getUnequalExpressions = function (expressions) {
+    return allExpressions.filter(function (expression1) {
+        return expressions.every(function (expression2) {
+            return expression1 !== expression2;
         });
     });
+};
 
+var describePredicate = function (name, expressions) {
     describe('.' + name + '()', function () {
-        it('returns false', function () {
-            falsyExpressions.forEach(function (falsyExpression) {
-                evalAssert(name, falsyExpression, false);
+        it('returns true', function () {
+            expressions.forEach(function (expression) {
+                evalAssert(name, expression, true);
             });
         });
 
-        it('returns true', function () {
-            truthyExpressions.forEach(function (truthyExpression) {
-                evalAssert(name, truthyExpression, true);
+        it('returns false', function () {
+            getUnequalExpressions(expressions).forEach(function (expression) {
+                evalAssert(name, expression, false);
             });
         });
     });
 };
 
 describe('ts', function () {
-    describePredicate('isObject', objectExpressions);
-
-    describePredicate('isArgumentsObject', [
+    describePredicate('isArguments', [
         'arguments'
     ]);
 
-    describePredicate('isArrayObject', [
-        '[]'
+    describePredicate('isArray', [
+        '[]',
+        'new Array()'
+    ]);
+
+    describePredicate('isBoolean', [
+        'true',
+        'false'
     ]);
 
     describePredicate('isBooleanObject', [
         'new Boolean()'
     ]);
 
-    describePredicate('isDateObject', [
+    describePredicate('isDate', [
         'new Date()'
     ]);
 
-    describePredicate('isDocumentObject', [
+    describePredicate('isDocument', [
         'document'
     ]);
 
-    describePredicate('isElementObject', [
+    describePredicate('isElement', [
         'document.createElement("div")',
         'document.createElement("span")'
     ]);
 
-    describePredicate('isErrorObject', [
+    describePredicate('isError', [
         'new Error()',
         'new EvalError()',
         'new RangeError()',
@@ -122,37 +136,34 @@ describe('ts', function () {
         'new URIError()'
     ]);
 
-    describePredicate('isFunctionObject', [
-        'function () {}',
-        'function *() {}'
+    describePredicate('isFloat', [
+        '1',
+        '-1',
+        '0',
+        '-0',
+        'Number.MAX_VALUE',
+        '-Number.MAX_VALUE',
+        'Number.MIN_VALUE',
+        '-Number.MIN_VALUE'
     ]);
 
-    describePredicate('isGlobalObject', [
+    describePredicate('isFunction', [
+        'function () {}',
+        'new Function()'
+    ]);
+
+    describePredicate('isGlobal', [
         'global',
         'window'
     ]);
 
-    describePredicate('isNumberObject', [
-        'new Number()'
-    ]);
-
-    describePredicate('isPlainObject', [
-        '{}'
-    ]);
-
-    describePredicate('isRegExpObject', [
-        'new RegExp()'
-    ]);
-
-    describePredicate('isStringObject', [
-        'new String()'
-    ]);
-
-    describePredicate('isPrimitive', primitiveExpressions);
-
-    describePredicate('isBoolean', [
-        'false',
-        'true'
+    describePredicate('isInteger', [
+        '1',
+        '-1',
+        '0',
+        '-0',
+        'Number.MAX_VALUE',
+        '-Number.MAX_VALUE'
     ]);
 
     describePredicate('isNull', [
@@ -161,36 +172,48 @@ describe('ts', function () {
 
     describePredicate('isNullOrUndefined', [
         'null',
-        'undefined'
+        'undefined',
+        'void 0'
     ]);
 
     describePredicate('isNumber', [
+        '1',
+        '-1',
         '0',
-        '-Number.MIN_VALUE',
-        'Number.MIN_VALUE',
-        '-Number.MAX_VALUE',
+        '-0',
         'Number.MAX_VALUE',
-        '-Infinity',
+        '-Number.MAX_VALUE',
+        'Number.MIN_VALUE',
+        '-Number.MIN_VALUE',
         'Infinity',
+        '-Infinity',
         'NaN'
     ]);
 
-    describePredicate('isFiniteNumber', [
-        '0',
-        '-Number.MIN_VALUE',
-        'Number.MIN_VALUE',
-        '-Number.MAX_VALUE',
-        'Number.MAX_VALUE'
+    describePredicate('isNumberObject', [
+        'new Number()'
     ]);
 
-    describePredicate('isIntegerNumber', [
-        '0',
-        '-Number.MAX_VALUE',
-        'Number.MAX_VALUE'
+    describePredicate('isObject', [
+        '{}',
+        'new Object()'
+    ]);
+
+    describePredicate('isPrimitive', primitiveExpressions);
+    describePredicate('isReference', referenceExpressions);
+
+    describePredicate('isRegExp', [
+        '/(?:)/',
+        'new RegExp()'
     ]);
 
     describePredicate('isString', [
+        '"foo"',
         '""'
+    ]);
+
+    describePredicate('isStringObject', [
+        'new String()'
     ]);
 
     describePredicate('isSymbol', [
@@ -198,6 +221,7 @@ describe('ts', function () {
     ]);
 
     describePredicate('isUndefined', [
-        'undefined'
+        'undefined',
+        'void 0'
     ]);
 });
