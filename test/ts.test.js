@@ -166,6 +166,10 @@ describe('ts', function () {
         '-Number.MAX_VALUE'
     ]);
 
+    describePredicate('isNaN', [
+        'NaN'
+    ]);
+
     describePredicate('isNull', [
         'null'
     ]);

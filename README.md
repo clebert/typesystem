@@ -44,6 +44,7 @@ var ts = require('typesystem');
 - [ts.isFunction(value)](#tsisfunctionvalue)
 - [ts.isGlobal(value)](#tsisglobalvalue)
 - [ts.isInteger(value)](#tsisintegervalue)
+- [ts.isNaN(value)](#tsisnanvalue)
 - [ts.isNull(value)](#tsisnullvalue)
 - [ts.isNullOrUndefined(value)](#tsisnullorundefinedvalue)
 - [ts.isNumber(value)](#tsisnumbervalue)
@@ -150,6 +151,12 @@ ts.isInteger(0);                 // returns true
 ts.isInteger(-0);                // returns true
 ts.isInteger(Number.MAX_VALUE);  // returns true
 ts.isInteger(-Number.MAX_VALUE); // returns true
+```
+
+### ts.isNaN(value)
+
+```javascript
+ts.isNaN(NaN); // returns true
 ```
 
 ### ts.isNull(value)
